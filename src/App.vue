@@ -6,9 +6,7 @@ import index from '@/views/index.vue'
 <template>
 	<div>
 		<index></index>
-		<el-button>default</el-button>
 	</div>
-  
 </template>
 
 <style scoped>

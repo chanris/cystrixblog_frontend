@@ -18,5 +18,10 @@ for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
 }
 // console.log('main.js', import.meta.env)
 // app.use(router)
+
+if ('scrollRestoration' in history) {
+	// 如果浏览器支持 scrollRestoration，将其设置为 'manual'
+	history.scrollRestoration = 'manual'
+}
 app.use(store)
 app.mount('#app')
