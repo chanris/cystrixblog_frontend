@@ -48,7 +48,6 @@ const scrollToContent = function() {
 }
 
 const handleScroll = () => {
-	console.log('scroll listener ...')
 	const newScrollPosition = window.scrollY
 	if(newScrollPosition < lastScrollPosition) {
 		isHdBoxVisible.value = true
@@ -73,6 +72,16 @@ const handleScroll = () => {
 		transform: translateY(0);
 	}
 }
+
+@keyframes fadeIn {
+	0% {opacity: 0;}
+	100% { opacity: 1;}
+}
+
+@keyframes slideDown {
+	0% {transform: translateY(-100%);}
+	100% {transform: translateY(0)}
+}
 .container {
 	height: 100vh;
 	width: 100%;
@@ -92,6 +101,7 @@ const handleScroll = () => {
 		padding: 0 36px;
 		background-color: transparent;
 		color: #fff;
+		animation: fadeIn 1s ease-in-out, slideDown 1s ease-in-out;
 		&__left {
 			font-size: 18.2px;
 			font-weight: 700;
