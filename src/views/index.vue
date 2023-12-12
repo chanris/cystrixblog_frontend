@@ -31,6 +31,7 @@
 		<div class="arrowdown-box" @click="scrollToContent">
 			<ArrowDownBold style="width: 1em; height: 1em;" />
 		</div>
+		<div class="blog-name">Cystrix's blog</div>
 		<div class="motto"><span>{{ mottoDisplay }}</span> <span class="type-cursor" :class="{'type-cursor-blink': isBlink}">|</span> </div>
 		<div class="main">
 			<div class="content-box">
@@ -271,6 +272,7 @@ const goIndex = () => {
 }
 
 // 座右铭显示
+const mottoList = ref([])
 const motto = ref("今日事，今日毕")
 const mottoDisplay = ref('')
 const isBlink = ref(false)
@@ -508,6 +510,18 @@ onBeforeUnmount(()=>{
 				width: 70px;
 			}
 		}
+	}
+
+	.blog-name {
+		position: absolute;
+		top: 43%;
+		left: 50%;
+		height: 60px;
+		line-height: 60px;
+		transform: translateX(-50%);
+		font-size: 40px;
+		font-weight: 700;
+		color: #fff;
 	}
 
 	.arrowdown-box {
