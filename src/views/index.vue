@@ -1,7 +1,7 @@
 <template>
 	<div class="container">
 		<div class="hd-box" v-show="isHdBoxVisible">
-			<div class="hd-box__left">
+			<div class="hd-box__left" @click="goIndex">
 				Cystrix's blog
 			</div>
 			<div class="hd-box__right">
@@ -31,6 +31,7 @@
 		<div class="arrowdown-box" @click="scrollToContent">
 			<ArrowDownBold style="width: 1em; height: 1em;" />
 		</div>
+		<div class="motto"><span>{{ mottoDisplay }}</span> <span class="type-cursor">|</span> </div>
 		<div class="main">
 			<div class="content-box">
 				<el-row :gutter="20">
@@ -152,18 +153,52 @@
 						<el-card class="card-box" >
 							<div class="archive-wrapper">
 								<div class="card-hd">
-									<el-iamge :src="archiveIcon" class="card-icon"></el-iamge>归档
+									<el-image :src="archiveIcon" class="card-icon"></el-image>归档
 								</div>
 								<div class="archive-list">
 									<div class="archive-item">
 										<div>三月 2022</div>
 										<div>1</div>
 									</div>
+									<div class="archive-item">
+										<div>四月 2022</div>
+										<div>2</div>
+									</div>
 								</div>
 							</div>
 						</el-card>
 						<el-card class="card-box">
-							网站资讯
+							<div class="website-wrapper">
+								<div class="card-hd">
+									<el-image :src="zhexianIcon" class="card-icon"></el-image>网站资讯
+								</div>
+								<div class="website-info">
+									<div class="website-info-item">
+										<div>文章数目：</div>
+										<div>6</div>
+									</div>
+									<div class="website-info-item">
+										<div>已运行时间：</div>
+										<div>1073天</div>
+									</div>
+									<div class="website-info-item">
+										<div>本站总字数：</div>
+										<div>6.3k</div>
+									</div>
+									<div class="website-info-item">
+										<div>本站访客数：</div>
+										<div>136</div>
+									</div>
+									<div class="website-info-item">
+										<div>本站总访问量：</div>
+										<div>352</div>
+									</div>
+									<div class="website-info-item">
+										<div>最后更新时间：</div>
+										<div>2022年3月19日</div>
+									</div>
+								</div>
+							</div>
 						</el-card>
 					</el-col>
 				</el-row>
@@ -179,7 +214,8 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, onBeforeUnmount } from 'vue'
+import {useRouter} from 'vue-router'
 import defaultAvatar from  '@/assets/img/default_avatar.jpg'
 import githubWhiteIcon from '@/assets/svg/github-white.svg'
 import githubIcon from '@/assets/svg/github.svg'
@@ -189,6 +225,7 @@ import timeIcon from '@/assets/svg/time.svg'
 import folderOpenIcon from '@/assets/svg/folderOpen.svg'
 import tagIcon from '@/assets/svg/tag.svg'
 import archiveIcon from '@/assets/svg/archive.svg'
+import zhexianIcon from '@/assets/svg/zhexian.svg'
 // 滚动条设置
 let lastScrollPosition = 0
 const isHdBoxVisible = ref(true)
@@ -227,9 +264,90 @@ const rotateCounterclockwise = () => {
   avatar.style.transform = 'rotate(-360deg)';
 }
 
+// 刷新首页
+const router = useRouter()
+const goIndex = () => {
+	router.go(0)
+}
+
+// 座右铭显示
+const motto = ref("今日事，今日毕。")
+const mottoDisplay = ref('')
+// const mottoDisplayTimer = setInterval(()=>{
+// 	if(flag) {
+// 		mottoDisplay.value = motto.value.substring(0, index++)
+// 	}
+// }, 500)
+
+// 封装异步任务： promise写法
+// const x = function() {
+// 	return Promise((resolve, reject) => {
+// 		console.log('Promise executed...')
+// 		// if execute success
+// 		let msg = {code: 'rest.success', result: '{xxx}'}
+// 		let errMsg = {code: 'failed', result: 'xxxx'}
+// 		resolve(msg)
+// 	//reject(msg) // 这样会抛出一个primose异常，
+// 	}).then((value)=>{
+// 		console.log(value)
+// 	}, err=> {
+// 		console.log('捕获err信息')
+// 		console.log(err)
+// 	})
+// }
+const mottoDisplayHandler = function() {
+	return new Promise((resolve)=>{
+		// motto 长度不能为0！
+		let length = motto.value.length + 1
+		let index = 1
+		let timer = setInterval(()=>{
+			if(length !== index ) {
+				mottoDisplay.value = motto.value.substring(0, index++)
+			}else {
+				resolve(timer)
+			}
+		}, 200)
+	})
+}
+const mottoHiddenHandler = function() {
+	return new Promise((resolve)=>{
+		let length = motto.value.length
+		let index = length
+		let disapperTime = 1000 // ms
+		let timer = setInterval(()=>{
+			if(index >= 0) {
+				mottoDisplay.value = motto.value.substring(0, index--)
+			}else {
+				resolve(timer)
+			}
+		}, disapperTime / length)
+	})
+}
+
+const loopDisplay = function() {
+	mottoDisplayHandler().then(timer => {
+		clearInterval(timer)
+		setTimeout(() => {}, 1000);
+		mottoHiddenHandler().then(timer => {
+			clearInterval(timer)
+			loopDisplay()
+		})
+	})
+}
+loopDisplay()
+
+
+
+
+onBeforeUnmount(()=>{
+	// mottoDisplayTimer.clear()
+	// mottoHidenTimmer.clear()
+})
 </script>
 
 <style scoped lang="scss">
+
+
 @keyframes bounce {
 	0% {
 		transform: translateY(0);
@@ -283,8 +401,20 @@ const rotateCounterclockwise = () => {
 	}
 }
 
+@keyframes typing {
+	from { width: 0 }
+	to { width: 100% }
+}
+
+@keyframes blink-animation {
+  50% {
+    opacity: 0;
+  }
+}
+
 .el-avatar {
-  transition: transform 0.7s ease-in-out;
+  transition: transform 0.5s ease; // 开始慢，中间快，结束慢
+  transition-delay: 0s;
 }
 .el-avatar:hover {
 	transform: rotate(360deg);
@@ -301,6 +431,29 @@ const rotateCounterclockwise = () => {
 	height: 20px; 
 	width: 20px; 
 	margin-right: 7px;
+}
+
+
+
+.motto {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	height: 36px;
+	line-height: 36px;
+	transform: translateX(-50%);
+	z-index: 3;
+	color: #fff;
+	white-space: nowrap;
+	font-size: 24px;
+}
+
+.type-cursor {
+	display: inline-block;
+	transform: translateX(-50%);
+}
+.type-cursor-blink {
+	animation: blink-animation 1s step-end infinite;
 }
 
 .container {
@@ -327,6 +480,7 @@ const rotateCounterclockwise = () => {
 		&__left {
 			font-size: 18.2px;
 			font-weight: 700;
+			cursor: pointer;
 		}
 
 		&__right {
@@ -495,10 +649,23 @@ const rotateCounterclockwise = () => {
 
 				.archive-wrapper {
 					.archive-list {
-						width: 230px;
+						width: 243px;
 						.archive-item {
+							display: flex;
+							justify-content: space-between;
 							height: 28px;
 							font-size: 14px;
+						}
+					}
+				}
+				.website-wrapper {
+					font-size: 14px;
+					.website-info {
+						width: 243px;
+						&-item {
+							display: flex;
+							justify-content: space-between;
+							height: 28px;
 						}
 					}
 				}
