@@ -31,7 +31,7 @@
 		<div class="arrowdown-box" @click="scrollToContent">
 			<ArrowDownBold style="width: 1em; height: 1em;" />
 		</div>
-		<div class="motto"><span>{{ mottoDisplay }}</span> <span class="type-cursor">|</span> </div>
+		<div class="motto"><span>{{ mottoDisplay }}</span> <span class="type-cursor" :class="{'type-cursor-blink': isBlink}">|</span> </div>
 		<div class="main">
 			<div class="content-box">
 				<el-row :gutter="20">
@@ -271,8 +271,9 @@ const goIndex = () => {
 }
 
 // 座右铭显示
-const motto = ref("今日事，今日毕。")
+const motto = ref("今日事，今日毕")
 const mottoDisplay = ref('')
+const isBlink = ref(false)
 // const mottoDisplayTimer = setInterval(()=>{
 // 	if(flag) {
 // 		mottoDisplay.value = motto.value.substring(0, index++)
@@ -324,17 +325,27 @@ const mottoHiddenHandler = function() {
 	})
 }
 
+// 模仿线程睡眠
+function sleep(ms) {
+	return new Promise(resolve => setTimeout(resolve, ms))
+}
+
 const loopDisplay = function() {
 	mottoDisplayHandler().then(timer => {
 		clearInterval(timer)
-		setTimeout(() => {}, 1000);
-		mottoHiddenHandler().then(timer => {
-			clearInterval(timer)
-			loopDisplay()
+		isBlink.value = true
+		// 睡一秒执行 mottohidden 操作
+		sleep(1000).then(()=>{
+			isBlink.value = false
+			mottoHiddenHandler().then(timer => {
+				clearInterval(timer)
+				loopDisplay()
+			})
 		})
 	})
 }
 loopDisplay()
+
 
 
 
@@ -450,10 +461,10 @@ onBeforeUnmount(()=>{
 
 .type-cursor {
 	display: inline-block;
-	transform: translateX(-50%);
+	transform: translateX(-100%);
 }
 .type-cursor-blink {
-	animation: blink-animation 1s step-end infinite;
+	animation: blink-animation 0.5s ease infinite;
 }
 
 .container {
