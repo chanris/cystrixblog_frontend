@@ -37,7 +37,6 @@
 					<el-col :span="18" class="post-wrapper">
 						<el-card style="height: 280px;">
 						</el-card>
-
 						<div class="page-wrapper">
 							<el-pagination :hide-on-single-page="true" background  layout="prev, pager, next" :total="50" />
 						</div>
@@ -76,25 +75,61 @@
 							</div>
 						</el-card>
 
-						<el-card class="card-box" style="height: 108px;">
-							公告
+						<el-card class="card-box" >
+							<div class="notice-wrapper">
+								<div class="">
+									<el-image class="notice-icon" :src="noticeIcon" style="height: 20px; width: 20px; margin-right: 7px;"></el-image> 公告
+								</div>
+								<div class="list">
+									<div class="item">
+										This is my blog
+									</div>
+								</div>
+							</div>
 						</el-card>
 						<el-card class="card-box" style="height: 430px;">
-							最新文章
+							<div class="article-wrapper">
+								<div style="display: flex; align-items: center;">
+									<el-image style="height: 20px; width: 20px; margin-right: 7px;" :src="timeIcon"></el-image>
+									最新文章
+								</div>
+								<div class="article-list">
+									<el-image style="height: 59px; width: 59px; margin-right: 10px;"></el-image>
+									<div class="item">
+										<div style="font-size: 14px; height: 19px; color: rgb(76, 73, 72); line-height: 19px;">jwt的介绍与使用</div>
+										<div style="color: rgb(133, 133, 133); font-size: 12px; height: 24px; line-height: 24px;">2022-03-19</div>
+									</div>
+								</div>
+							</div>
 						</el-card>
-						<el-card class="card-box" style="height: 284px;">
-							标签
+						<el-card class="card-box">
+							<div class="category-wrapper">
+								<div style="font-size: 17px;">
+									<el-iamge :src="FolderOpened" style="height: 20px; width: 20px;" /> 分类
+								</div>
+								<div class="category-list">
+									<div class="category-item">
+										<div>C语言</div>
+										<div>1</div>
+									</div>
+								</div>
+							</div>
 						</el-card>
-						<el-card class="card-box" style="height: 215px;">
-							归档
+						<el-card class="card-box" >
+							<div class="tag-wrapper">
+								
+							</div>
 						</el-card>
-						<el-card class="card-box" style="height: 259px;">
+						<el-card class="card-box" >
+							<div class="tag-wrapper">
+								
+							</div>
+						</el-card>
+						<el-card class="card-box">
 							网站资讯
 						</el-card>
 					</el-col>
 				</el-row>
-
-
 			</div>
 			<div class="footer">
 				<div class="footer-wrapper">
@@ -112,7 +147,8 @@ import defaultAvatar from  '@/assets/img/default_avatar.jpg'
 import githubWhiteIcon from '@/assets/svg/github-white.svg'
 import githubIcon from '@/assets/svg/github.svg'
 import emailIcon from '@/assets/svg/email.svg'
-
+import noticeIcon from '@/assets/svg/notice.svg'
+import timeIcon from '@/assets/svg/time.svg'
 // 滚动条设置
 let lastScrollPosition = 0
 const isHdBoxVisible = ref(true)
@@ -195,7 +231,17 @@ const rotateCounterclockwise = () => {
 	100% {
 		background-position: 100% 0;
 	}
-} 
+}
+
+@keyframes pluse {
+	0% {
+		transform: scale(1);
+	}
+
+	100% {
+		transform: scale(1.2);
+	}
+}
 
 .el-avatar {
   transition: transform 0.7s ease-in-out;
@@ -266,13 +312,11 @@ const rotateCounterclockwise = () => {
 			padding-top: 20px;
 			max-width: 1200px;
 			margin: 0 auto;
-
 			.post-wrapper {
 				.page-wrapper {
 					display: flex;
 					justify-content: center;
 					margin-top: 20px;
-				
 				}
 			}
 			.card-box {
@@ -305,25 +349,54 @@ const rotateCounterclockwise = () => {
 						background-position: -100% 0;
 						cursor: pointer;
 					}
-				}
-				.user-statistics {
-					display: flex;
-					justify-content: center;
-					margin-top: 5px;
-					.item {
-						width: 77px;
+
+					.user-statistics {
 						display: flex;
-						flex-direction: column; 
-						justify-content: center; 
-						align-items: center;
-						
-						&-one {
-							height: 28px;
-							font-size: 14px;
+						justify-content: center;
+						margin-top: 5px;
+						.item {
+							width: 77px;
+							display: flex;
+							flex-direction: column; 
+							justify-content: center; 
+							align-items: center;
+							&-one {
+								height: 28px;
+								font-size: 14px;
+							}
+							&-two {
+								height: 40px;
+								font-size: 19px;
+							}
 						}
-						&-two {
-							height: 40px;
-							font-size: 19px;
+					}
+				}
+
+				.notice-wrapper {
+					display: flex;
+					flex-direction: column;
+					font-size: 17px;
+					.notice-icon {
+						animation: pluse 0.5s infinite alternate; 
+					}
+					.list {
+						margin-top: 10px;
+						.item {
+
+						}
+					}
+				}
+				
+				.article-wrapper {
+					
+					.article-list {
+						display: flex;
+						height: 66px;
+						width: 230px;
+						.item {
+							display: flex;
+							flex-direction: column;
+							justify-content: center;
 						}
 					}
 				}
