@@ -77,8 +77,8 @@
 
 						<el-card class="card-box" >
 							<div class="notice-wrapper">
-								<div class="">
-									<el-image class="notice-icon" :src="noticeIcon" style="height: 20px; width: 20px; margin-right: 7px;"></el-image> 公告
+								<div class="card-hd">
+									<el-image class="notice-icon card-icon" :src="noticeIcon" ></el-image> 公告
 								</div>
 								<div class="list">
 									<div class="item">
@@ -87,42 +87,79 @@
 								</div>
 							</div>
 						</el-card>
-						<el-card class="card-box" style="height: 430px;">
+						<el-card class="card-box">
 							<div class="article-wrapper">
-								<div style="display: flex; align-items: center;">
-									<el-image style="height: 20px; width: 20px; margin-right: 7px;" :src="timeIcon"></el-image>
+								<div class="card-hd">
+									<el-image class="card-icon" :src="timeIcon"/>
 									最新文章
 								</div>
 								<div class="article-list">
-									<el-image style="height: 59px; width: 59px; margin-right: 10px;"></el-image>
-									<div class="item">
-										<div style="font-size: 14px; height: 19px; color: rgb(76, 73, 72); line-height: 19px;">jwt的介绍与使用</div>
-										<div style="color: rgb(133, 133, 133); font-size: 12px; height: 24px; line-height: 24px;">2022-03-19</div>
+									<div class="article-item">
+										<el-image style="height: 59px; width: 59px; margin-right: 10px;"></el-image>
+										<div class="item-right">
+											<div class="item-right-one">jwt的介绍与使用</div>
+											<div class="item-right-two">2022-03-19</div>
+										</div>
+									</div>
+									<div class="article-item">
+										<el-image style="height: 59px; width: 59px; margin-right: 10px;"></el-image>
+										<div class="item-right">
+											<div class="item-right-one">jwt的介绍与使用</div>
+											<div class="item-right-two">2022-03-19</div>
+										</div>
 									</div>
 								</div>
 							</div>
 						</el-card>
 						<el-card class="card-box">
 							<div class="category-wrapper">
-								<div style="font-size: 17px;">
-									<el-iamge :src="FolderOpened" style="height: 20px; width: 20px;" /> 分类
+								<div class="card-hd">
+									<el-image :src="folderOpenIcon" class="card-icon" /> 分类
 								</div>
 								<div class="category-list">
 									<div class="category-item">
 										<div>C语言</div>
 										<div>1</div>
 									</div>
+									<div class="category-item">
+										<div>jwt</div>
+										<div>1</div>
+									</div>
+									<div class="category-item">
+										<div>前端</div>
+										<div>1</div>
+									</div>
+								</div>
+							</div>
+						</el-card>
+						<el-card class="card-box">
+							<div class="tag-wrapper">
+								<div class="card-hd">
+									<el-image :src="tagIcon" class="card-icon"></el-image>标签
+								</div>
+								<div class="tag-cloud">
+									<span class="tag-item">Hexo</span>
+									<span class="tag-item">NoSql</span>
+									<span class="tag-item">Redis</span>
+									<span class="tag-item">iconfonts</span>
+									<span class="tag-item">css</span>
+									<span class="tag-item">内存</span>
+									<span class="tag-item">数据类型</span>
+									<span class="tag-item">补码</span>
 								</div>
 							</div>
 						</el-card>
 						<el-card class="card-box" >
-							<div class="tag-wrapper">
-								
-							</div>
-						</el-card>
-						<el-card class="card-box" >
-							<div class="tag-wrapper">
-								
+							<div class="archive-wrapper">
+								<div class="card-hd">
+									<el-iamge :src="archiveIcon" class="card-icon"></el-iamge>归档
+								</div>
+								<div class="archive-list">
+									<div class="archive-item">
+										<div>三月 2022</div>
+										<div>1</div>
+									</div>
+								</div>
 							</div>
 						</el-card>
 						<el-card class="card-box">
@@ -149,6 +186,9 @@ import githubIcon from '@/assets/svg/github.svg'
 import emailIcon from '@/assets/svg/email.svg'
 import noticeIcon from '@/assets/svg/notice.svg'
 import timeIcon from '@/assets/svg/time.svg'
+import folderOpenIcon from '@/assets/svg/folderOpen.svg'
+import tagIcon from '@/assets/svg/tag.svg'
+import archiveIcon from '@/assets/svg/archive.svg'
 // 滚动条设置
 let lastScrollPosition = 0
 const isHdBoxVisible = ref(true)
@@ -250,6 +290,19 @@ const rotateCounterclockwise = () => {
 	transform: rotate(360deg);
 }
 
+.card-hd {
+	display: flex; 
+	align-items: center;
+	height: 30px;
+	margin-bottom: 5px;
+	font-size: 17px;
+}
+.card-icon {
+	height: 20px; 
+	width: 20px; 
+	margin-right: 7px;
+}
+
 .container {
 	height: 100vh;
 	width: 100%;
@@ -257,7 +310,7 @@ const rotateCounterclockwise = () => {
 	background-size: cover;
 	background-position: center;
 	background-attachment: fixed;
-
+	color: #4C4948;
 	.hd-box {
 		position: fixed;
 		display: flex;
@@ -375,12 +428,12 @@ const rotateCounterclockwise = () => {
 				.notice-wrapper {
 					display: flex;
 					flex-direction: column;
-					font-size: 17px;
+					
 					.notice-icon {
 						animation: pluse 0.5s infinite alternate; 
 					}
 					.list {
-						margin-top: 10px;
+						// margin-top: 10px;
 						.item {
 
 						}
@@ -388,15 +441,64 @@ const rotateCounterclockwise = () => {
 				}
 				
 				.article-wrapper {
-					
+					font-size: 17px;
 					.article-list {
-						display: flex;
-						height: 66px;
-						width: 230px;
-						.item {
+						.article-item {
 							display: flex;
-							flex-direction: column;
-							justify-content: center;
+							height: 66px;
+							width: 230px;
+							.item-right {
+								display: flex;
+								flex-direction: column;
+								justify-content: center;
+								&-one {
+									font-size: 14px; 
+									height: 19px; 
+									color: rgb(76, 73, 72); 
+									line-height: 19px;
+								}
+								&-two {
+									font-size: 12px; 
+									color: rgb(133, 133, 133); 
+									height: 24px; 
+									line-height: 24px;
+								}
+							}
+						}
+					}
+				}
+
+				.category-wrapper {
+					.category-list {
+						color: #4C4948;
+						font-size: 14px;
+						.category-item {
+							display: flex;
+							justify-content: space-between;
+							align-items: center;
+							height: 28px;
+							
+						}
+					}
+				}
+
+				.tag-wrapper {
+					.tag-cloud {
+						width: 243px;
+						.tag-item {
+							font-size: 15.4px;
+							height: 30.8px;
+							padding: 0 2px;
+						}
+					}
+				}
+
+				.archive-wrapper {
+					.archive-list {
+						width: 230px;
+						.archive-item {
+							height: 28px;
+							font-size: 14px;
 						}
 					}
 				}
