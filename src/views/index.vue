@@ -55,157 +55,25 @@
 					</el-col>
 					<el-col :span="6">
 						<el-card class="card-box" style="height: 360px;">
-							<div class="user-wrapper">
-								<el-avatar shape="circle" :size="110" :src="defaultAvatar" fit="fill"
-									@mouseover="rotateClockwise" @mouseleave="rotateCounterclockwise" />
-								<div class="user-name">Cystrix</div>
-								<div class="user-statistics">
-									<div class="item">
-										<div class="item-one">文章</div>
-										<div class="item-two">6</div>
-									</div>
-									<div class="item">
-										<div class="item-one">标签</div>
-										<div class="item-two">11</div>
-									</div>
-									<div class="item">
-										<div class="item-one">分类</div>
-										<div class="item-two">6</div>
-									</div>
-								</div>
-								<div class="user-followme"> <el-image :src="githubWhiteIcon"
-										style="height: 20px; width: 20px; margin-right: 5px;" /> Follow Me</div>
-								<div style="margin-top: 20px; display: flex; justify-content: center; align-items: center;">
-									<el-image :src="githubIcon" style="height: 20px; width: 20px;"></el-image>
-									<div style="width: 20px;"></div>
-									<el-image :src="emailIcon" style="height: 20px; width: 20px; "></el-image>
-								</div>
-							</div>
-						</el-card>
-
-						<el-card class="card-box">
-							<div class="notice-wrapper">
-								<div class="card-hd">
-									<el-image class="notice-icon card-icon" :src="noticeIcon"></el-image> 公告
-								</div>
-								<div class="list">
-									<div class="item">
-										This is my blog
-									</div>
-								</div>
-							</div>
+							<UserInfo></UserInfo>
 						</el-card>
 						<el-card class="card-box">
-							<div class="article-wrapper">
-								<div class="card-hd">
-									<el-image class="card-icon" :src="timeIcon" />
-									最新文章
-								</div>
-								<div class="article-list">
-									<div class="article-item">
-										<el-image style="height: 59px; width: 59px; margin-right: 10px;"></el-image>
-										<div class="item-right">
-											<div class="item-right-one">jwt的介绍与使用</div>
-											<div class="item-right-two">2022-03-19</div>
-										</div>
-									</div>
-									<div class="article-item">
-										<el-image style="height: 59px; width: 59px; margin-right: 10px;"></el-image>
-										<div class="item-right">
-											<div class="item-right-one">jwt的介绍与使用</div>
-											<div class="item-right-two">2022-03-19</div>
-										</div>
-									</div>
-								</div>
-							</div>
+							<Notice></Notice>
 						</el-card>
 						<el-card class="card-box">
-							<div class="category-wrapper">
-								<div class="card-hd">
-									<el-image :src="folderOpenIcon" class="card-icon" /> 分类
-								</div>
-								<div class="category-list">
-									<div class="category-item">
-										<div>C语言</div>
-										<div>1</div>
-									</div>
-									<div class="category-item">
-										<div>jwt</div>
-										<div>1</div>
-									</div>
-									<div class="category-item">
-										<div>前端</div>
-										<div>1</div>
-									</div>
-								</div>
-							</div>
+							<LatestArticle></LatestArticle>
 						</el-card>
 						<el-card class="card-box">
-							<div class="tag-wrapper">
-								<div class="card-hd">
-									<el-image :src="tagIcon" class="card-icon"></el-image>标签
-								</div>
-								<div class="tag-cloud">
-									<span class="tag-item">Hexo</span>
-									<span class="tag-item">NoSql</span>
-									<span class="tag-item">Redis</span>
-									<span class="tag-item">iconfonts</span>
-									<span class="tag-item">css</span>
-									<span class="tag-item">内存</span>
-									<span class="tag-item">数据类型</span>
-									<span class="tag-item">补码</span>
-								</div>
-							</div>
+							<Catageory></Catageory>
 						</el-card>
 						<el-card class="card-box">
-							<div class="archive-wrapper">
-								<div class="card-hd">
-									<el-image :src="archiveIcon" class="card-icon"></el-image>归档
-								</div>
-								<div class="archive-list">
-									<div class="archive-item">
-										<div>三月 2022</div>
-										<div>1</div>
-									</div>
-									<div class="archive-item">
-										<div>四月 2022</div>
-										<div>2</div>
-									</div>
-								</div>
-							</div>
+							<Tag></Tag>
 						</el-card>
 						<el-card class="card-box">
-							<div class="website-wrapper">
-								<div class="card-hd">
-									<el-image :src="zhexianIcon" class="card-icon"></el-image>网站资讯
-								</div>
-								<div class="website-info">
-									<div class="website-info-item">
-										<div>文章数目：</div>
-										<div>6</div>
-									</div>
-									<div class="website-info-item">
-										<div>已运行时间：</div>
-										<div>1073天</div>
-									</div>
-									<div class="website-info-item">
-										<div>本站总字数：</div>
-										<div>6.3k</div>
-									</div>
-									<div class="website-info-item">
-										<div>本站访客数：</div>
-										<div>136</div>
-									</div>
-									<div class="website-info-item">
-										<div>本站总访问量：</div>
-										<div>352</div>
-									</div>
-									<div class="website-info-item">
-										<div>最后更新时间：</div>
-										<div>2022年3月19日</div>
-									</div>
-								</div>
-							</div>
+							<Archive></Archive>
+						</el-card>
+						<el-card class="card-box">
+							<WebInfo></WebInfo>
 						</el-card>
 					</el-col>
 				</el-row>
@@ -224,58 +92,22 @@
 import { onMounted, ref, onBeforeUnmount } from 'vue'
 import { useRouter } from 'vue-router'
 import NavigateBar from '@/components/NavigateBar.vue'
-import defaultAvatar from '@/assets/img/default_avatar.jpg'
-import githubWhiteIcon from '@/assets/svg/github-white.svg'
-import githubIcon from '@/assets/svg/github.svg'
-import emailIcon from '@/assets/svg/email.svg'
-import noticeIcon from '@/assets/svg/notice.svg'
-import timeIcon from '@/assets/svg/time.svg'
-import folderOpenIcon from '@/assets/svg/folderOpen.svg'
-import tagIcon from '@/assets/svg/tag.svg'
-import archiveIcon from '@/assets/svg/archive.svg'
-import zhexianIcon from '@/assets/svg/zhexian.svg'
-// 滚动条设置
-// let lastScrollPosition = 0
-// const isHdBoxVisible = ref(true)
+import UserInfo from '@/components/UserInfo.vue'
+import Notice from '@/components/Notice.vue'
+import Catageory from '@/components/CategoryCard.vue'
+import LatestArticle from '@/components/LatestArticle.vue'
+import Tag from '@/components/TagCard.vue'
+import Archive from '@/components/ArchiveCard.vue'
+import WebInfo from '@/components/WebInfo.vue'
 
-// onMounted(() => {
-// 	window.scrollTo({ top: 0 })
-// 	window.addEventListener('scroll', handleScroll)
-// })
 
+//跳转到正文部分
 const scrollToContent = function () {
 	const contentBoxHeight = document.querySelector('.content-box').offsetTop;
 	window.scrollTo({
 		top: contentBoxHeight + window.innerHeight,
 		behavior: 'smooth'
 	})
-}
-
-// const handleScroll = () => {
-// 	const newScrollPosition = window.scrollY
-// 	if (newScrollPosition < lastScrollPosition) {
-// 		isHdBoxVisible.value = true
-// 	} else {
-// 		isHdBoxVisible.value = false
-// 	}
-// 	lastScrollPosition = newScrollPosition
-// }
-
-// 用户头像旋转
-const rotateClockwise = () => {
-	const avatar = document.querySelector('.el-avatar');
-	avatar.style.transform = 'rotate(360deg)';
-}
-
-const rotateCounterclockwise = () => {
-	const avatar = document.querySelector('.el-avatar');
-	avatar.style.transform = 'rotate(-360deg)';
-}
-
-// 刷新首页
-const router = useRouter()
-const goIndex = () => {
-	router.go(0)
 }
 
 // 座右铭显示
@@ -355,6 +187,7 @@ const loopDisplay = function () {
 loopDisplay()
 
 // 去文章详情页
+const router = useRouter()
 const goDetail = () => {
 	router.push({ name: 'articleDetail' })
 }
@@ -383,37 +216,6 @@ onBeforeUnmount(() => {
 }
 
 
-
-@keyframes slideDown {
-	0% {
-		transform: translateY(-100%);
-	}
-
-	100% {
-		transform: translateY(0)
-	}
-}
-
-@keyframes followProgress {
-	0% {
-		background-position: 0% 0;
-	}
-
-	100% {
-		background-position: 100% 0;
-	}
-}
-
-@keyframes pluse {
-	0% {
-		transform: scale(1);
-	}
-
-	100% {
-		transform: scale(1.2);
-	}
-}
-
 @keyframes typing {
 	from {
 		width: 0
@@ -429,31 +231,6 @@ onBeforeUnmount(() => {
 		opacity: 0;
 	}
 }
-
-.el-avatar {
-	transition: transform 0.5s ease; // 开始慢，中间快，结束慢
-	transition-delay: 0s;
-}
-
-.el-avatar:hover {
-	transform: rotate(360deg);
-}
-
-.card-hd {
-	display: flex;
-	align-items: center;
-	height: 30px;
-	margin-bottom: 5px;
-	font-size: 17px;
-}
-
-.card-icon {
-	height: 20px;
-	width: 20px;
-	margin-right: 7px;
-}
-
-
 
 .motto {
 	position: absolute;
@@ -586,163 +363,6 @@ onBeforeUnmount(() => {
 
 			.card-box {
 				margin-bottom: 20px;
-
-				.user-wrapper {
-					display: flex;
-					flex-direction: column;
-					justify-content: center;
-					align-items: center;
-
-					.user-name {
-						height: 44px;
-						line-height: 44px;
-						font-size: 22px;
-						font-weight: 500;
-					}
-
-					.user-followme {
-						display: flex;
-						justify-content: center;
-						align-items: center;
-						width: 230px;
-						height: 34px;
-						color: #fff;
-						font-size: 14px;
-						background: linear-gradient(to right, #49B1F5 50%, #ff7242 50%);
-						background-size: 200% 100%;
-						transition: background-position 0.5s ease-in;
-					}
-
-					.user-followme:hover {
-						background-position: -100% 0;
-						cursor: pointer;
-					}
-
-					.user-statistics {
-						display: flex;
-						justify-content: center;
-						margin-top: 5px;
-
-						.item {
-							width: 77px;
-							display: flex;
-							flex-direction: column;
-							justify-content: center;
-							align-items: center;
-
-							&-one {
-								height: 28px;
-								font-size: 14px;
-							}
-
-							&-two {
-								height: 40px;
-								font-size: 19px;
-							}
-						}
-					}
-				}
-
-				.notice-wrapper {
-					display: flex;
-					flex-direction: column;
-
-					.notice-icon {
-						animation: pluse 0.5s infinite alternate;
-					}
-
-					.list {
-
-						// margin-top: 10px;
-						.item {}
-					}
-				}
-
-				.article-wrapper {
-					font-size: 17px;
-
-					.article-list {
-						.article-item {
-							display: flex;
-							height: 66px;
-							width: 230px;
-
-							.item-right {
-								display: flex;
-								flex-direction: column;
-								justify-content: center;
-
-								&-one {
-									font-size: 14px;
-									height: 19px;
-									color: rgb(76, 73, 72);
-									line-height: 19px;
-								}
-
-								&-two {
-									font-size: 12px;
-									color: rgb(133, 133, 133);
-									height: 24px;
-									line-height: 24px;
-								}
-							}
-						}
-					}
-				}
-
-				.category-wrapper {
-					.category-list {
-						color: #4C4948;
-						font-size: 14px;
-
-						.category-item {
-							display: flex;
-							justify-content: space-between;
-							align-items: center;
-							height: 28px;
-
-						}
-					}
-				}
-
-				.tag-wrapper {
-					.tag-cloud {
-						width: 243px;
-
-						.tag-item {
-							font-size: 15.4px;
-							height: 30.8px;
-							padding: 0 2px;
-						}
-					}
-				}
-
-				.archive-wrapper {
-					.archive-list {
-						width: 243px;
-
-						.archive-item {
-							display: flex;
-							justify-content: space-between;
-							height: 28px;
-							font-size: 14px;
-						}
-					}
-				}
-
-				.website-wrapper {
-					font-size: 14px;
-
-					.website-info {
-						width: 243px;
-
-						&-item {
-							display: flex;
-							justify-content: space-between;
-							height: 28px;
-						}
-					}
-				}
 			}
 		}
 
@@ -781,9 +401,10 @@ onBeforeUnmount(() => {
 	}
 
 	:deep(.post-item > .el-card__body) {
+		display: flex;
 		padding: 0;
 		width: 877px;
-		display: flex;
 	}
 
-}</style>
+}
+</style>

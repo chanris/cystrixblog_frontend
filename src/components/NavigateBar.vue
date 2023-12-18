@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<div class="hd-box" v-show="isHdBoxVisible">
+		<div class="hd-box" v-show="isVisible">
 			<div class="hd-box__left" @click="goIndex">
 				Cystrix's blog
 			</div>
@@ -32,8 +32,9 @@
 </template>
 <script setup>
 import { ref, onMounted } from 'vue'
+import {useRouter} from 'vue-router'
 let lastScrollPosition = 0
-const isHdBoxVisible = ref(true)
+const isVisible = ref(true)
 
 onMounted(() => {
 	window.scrollTo({ top: 0 })
@@ -44,11 +45,17 @@ onMounted(() => {
 const handleScroll = () => {
 	const newScrollPosition = window.scrollY
 	if (newScrollPosition < lastScrollPosition) {
-		isHdBoxVisible.value = true
+		isVisible.value = true
 	} else {
-		isHdBoxVisible.value = false
+		isVisible.value = false
 	}
 	lastScrollPosition = newScrollPosition
+}
+
+// 刷新首页
+const router = useRouter()
+const goIndex = () => {
+	router.go(0)
 }
 
 </script>
@@ -57,11 +64,19 @@ const handleScroll = () => {
 	0% {
 		opacity: 0;
 	}
-	50% {
-		opacity: 0.5;
-	}
+	
 	100% {
 		opacity: 1;
+	}
+}
+
+@keyframes slideDown {
+	0% {
+		transform: translateY(-100%);
+	}
+
+	100% {
+		transform: translateY(0)
 	}
 }
 
