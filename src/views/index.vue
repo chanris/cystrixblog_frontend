@@ -184,6 +184,7 @@ loopDisplay()
 // 去文章详情页
 const router = useRouter()
 const goDetail = () => {
+	console.log('tirgger...')
 	router.push({ name: 'articleDetail' })
 }
 
@@ -304,7 +305,7 @@ onBeforeUnmount(() => {
 					.post-cover {
 						width: 395px;
 						height: 280px;
-
+						z-index: 2;
 						&:hover {
 							cursor: pointer;
 						}

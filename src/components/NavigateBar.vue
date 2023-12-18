@@ -35,7 +35,7 @@ import { ref, onMounted, computed } from 'vue'
 import { useRouter } from 'vue-router'
 let lastScrollPosition = 0
 const isVisible = ref(true)
-const hasBgColor = ref(true)
+const hasBgColor = ref(false)
 
 onMounted(() => {
 	window.scrollTo({ top: 0 })
@@ -49,7 +49,6 @@ const handleScroll = () => {
 	const newScrollPosition = window.scrollY
 	if (newScrollPosition === 0) {
 		hasBgColor.value = false
-
 	} else {
 		hasBgColor.value = true
 

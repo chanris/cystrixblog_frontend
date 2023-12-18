@@ -14,7 +14,18 @@
 					<el-col :span="18" class="post-wrapper">
 						<el-card class="post-content">
 							<v-md-preview :text="text" ></v-md-preview>
-							<div class="post-info"></div>
+							<div class="post-info">
+								<div class="author"> 
+									<div>
+										<span class="head">文章作者：</span> <a href="#">Cystrix</a>
+									</div>
+									<div>
+										<el-image style="width: 21px; height: 21px;" :src="copyrightIcon"></el-image>
+									</div>
+								</div>
+								<div style="height: 28px;"><span class="head">文章链接：</span> <a href="#">http://www.baidu.com/post/detail/xxxx/</a> </div>
+								<div style="height: 28px;"><span class="head">版权声明：</span> 本博客所有文章除特别声明外，均采用 <a href="#">CC BY-NC-SA 4.0 </a> 许可协议。转载请注明来自  <a href="/">Cystrix's blog</a>！</div>
+							</div>
 						</el-card>
 					</el-col>
 					<el-col :span="6">
@@ -40,60 +51,27 @@ import UserInfo from '@/components/UserInfo.vue'
 import Notice from '@/components/Notice.vue'
 import LatestArticle from '@/components/LatestArticle.vue'
 import Footer from '@/components/layout/footer.vue'
+import copyrightIcon from '@/assets/svg/copyright.svg'
 import { ref } from 'vue'
 
-const text = ref(`### cystrixblog_frontend
-			## xxxx
-			## xxxx
-			## xxxx
-			## xxxx
-			## xxxx
-			## xxxx
-			## xxxx
-			## xxxx
-			## xxxx
-			## xxxx
-			## xxxx
-			## xxxx
-			## xxxx
-			## xxxx
-			## xxxx
-			## xxxx
-			## xxxx
-			## xxxx
-			## xxxx
-			## xxxx
-			## xxxx
-			## xxxx
-			## xxxx
-			## xxxx
-			## xxxx
-			## xxxx
-			## xxxx
-			## xxxx
-			## xxxx
-			## xxxx
-			## xxxx
-			## xxxx
-			## xxxx
-			## xxxx
-			## xxxx
-			## xxxx
-			## xxxx
-			## xxxx
-			## xxxx
-			## xxxx
-			## xxxx
-			## xxxx
-			## xxxx
-			## xxxx
-	
-			
+const text = ref(`
+# cystrixblog_frontend
+> cystrixblog 使用 前后端分离架构
+## 前端技术 
+### Vue 
+> Vue是近年来比较热门的mvvm框架。
 `)
 
 </script>
 <style lang="scss" scoped>
+
+a {
+  color: rgb(153, 169, 191) !important;
+  text-decoration: underline; /* 让a标签有下划线 */
+}
+
 .wrapper {
+	color: #4C4948;
 	.title-box {
 		position: relative;
 		height: 400px;
@@ -153,9 +131,31 @@ const text = ref(`### cystrixblog_frontend
 				.post-content {
 					width: 877px;
 					.post-info {
-						height: 162px;
+						display: flex;
+						flex-direction: column;
+						justify-content: center;
+						box-sizing: border-box;
+						// height: 162px;
 						width: 798px;
 						border: 1px solid rgb(238, 238, 238);
+						margin: 0 auto;
+						padding: 10px 16px;
+						font-size: 14px;						
+						&:hover {
+							box-shadow: 0 3px 6px 4px rgba(7,17,27,0.05);
+						}
+						.author {
+							display: flex;
+							justify-content: space-between;
+							flex-direction: row;
+							align-items: center;
+							height: 28px;
+						}
+
+						.head {
+							color: rgb(73, 177, 245);
+							font-weight: 700;
+						}
 					}
 				}
 			}
