@@ -27,3 +27,8 @@ npm run dev
 ```sh
 npm run build
 ```
+
+### 使用v-md-editor 
+安装支持vue3的版本
+`npm i @kangc/v-md-editor@next -S`
+

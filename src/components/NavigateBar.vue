@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<div class="hd-box" v-show="isVisible">
+		<div class="hd-box" v-show="isVisible" :class="classObject">
 			<div class="hd-box__left" @click="goIndex">
 				Cystrix's blog
 			</div>
@@ -31,19 +31,29 @@
 	</div>
 </template>
 <script setup>
-import { ref, onMounted } from 'vue'
-import {useRouter} from 'vue-router'
+import { ref, onMounted, computed } from 'vue'
+import { useRouter } from 'vue-router'
 let lastScrollPosition = 0
 const isVisible = ref(true)
+const hasBgColor = ref(true)
 
 onMounted(() => {
 	window.scrollTo({ top: 0 })
 	window.addEventListener('scroll', handleScroll)
 })
 
-
+const classObject = computed(() => ({
+	bgColor: hasBgColor.value,
+}))
 const handleScroll = () => {
 	const newScrollPosition = window.scrollY
+	if (newScrollPosition === 0) {
+		hasBgColor.value = false
+
+	} else {
+		hasBgColor.value = true
+
+	}
 	if (newScrollPosition < lastScrollPosition) {
 		isVisible.value = true
 	} else {
@@ -64,7 +74,7 @@ const goIndex = () => {
 	0% {
 		opacity: 0;
 	}
-	
+
 	100% {
 		opacity: 1;
 	}
@@ -80,6 +90,19 @@ const goIndex = () => {
 	}
 }
 
+.bgColor {
+	background-color: rgba(255, 255, 255, 0.8) !important;
+	box-shadow: rgba(133, 133, 133, 0.6) 0px 5px 6px -5px;
+	color: #4C4948 !important;
+	// transition: background-color 0.5s ease;
+}
+.white {
+	color: #fff;
+}
+.gray {
+	color: #4C4948;
+}
+
 .hd-box {
 	position: fixed;
 	display: flex;
@@ -91,7 +114,8 @@ const goIndex = () => {
 	padding: 0 36px;
 	background-color: transparent;
 	color: #fff;
-	animation: fadeIn 1.5s ease-in-out, slideDown 1s ease-in-out;
+	animation: fadeIn 1s ease-in-out, slideDown 1s ease-in-out;
+	z-index: 3;
 
 	&__left {
 		font-size: 18.2px;
