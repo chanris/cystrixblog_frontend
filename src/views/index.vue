@@ -1,58 +1,63 @@
 <template>
 	<div class="container">
-		<div class="hd-box" v-show="isHdBoxVisible">
-			<div class="hd-box__left" @click="goIndex">
-				Cystrix's blog
-			</div>
-			<div class="hd-box__right">
-				<div class="item">
-					<HomeFilled style="width: 1.2em; height: 1.2em; margin-right: 5px;" /> 首页
-				</div>
-				<div class="item" style="margin-right: 10px;">
-					<Suitcase style="width: 1.2em; height: 1.2em; margin-right: 5px;" /> 时间轴
-				</div>
-				<div class="item">
-					<PriceTag style="width: 1.2em; height: 1.2em; margin-right: 5px;" /> 标签
-				</div>
-				<div class="item">
-					<FolderOpened style="width: 1.2em; height: 1.2em; margin-right: 5px;" /> 分类
-				</div>
-				<div class="item">
-					<ChatLineSquare style="width: 1.2em; height: 1.2em; margin-right: 5px;" /> 清单
-				</div>
-				<div class="item">
-					<Paperclip style="width: 1.2em; height: 1.2em; margin-right: 5px;" /> 友链
-				</div>
-				<div class="item">
-					<Apple style="width: 1.2em; height: 1.2em; margin-right: 5px;" /> 关于
-				</div>
-			</div>
-		</div>
+		<NavigateBar></NavigateBar>
 		<div class="arrowdown-box" @click="scrollToContent">
 			<ArrowDownBold style="width: 1em; height: 1em;" />
 		</div>
 		<div class="blog-name">Cystrix's blog</div>
-		<div class="motto"><span>{{ mottoDisplay }}</span> <span class="type-cursor" :class="{'type-cursor-blink': isBlink}">|</span> </div>
+		<div class="motto"><span>{{ mottoDisplay }}</span> <span class="type-cursor"
+				:class="{ 'type-cursor-blink': isBlink }">|</span> </div>
 		<div class="main">
 			<div class="content-box">
-				<el-row :gutter="20">
+				<el-row>
 					<el-col :span="18" class="post-wrapper">
-						<el-card style="height: 280px;">
+						<el-card class="post-item">
+							<el-image class="post-cover" @click="goDetail"></el-image>
+							<div class="post-item-right">
+								<div class="recent-post-info">
+									<div class="article-title" @click="goDetail">JWT的介绍与使用</div>
+									<div class="article-meta-wrap">
+										<Grid style="height: 13px; width: 13px; padding-right: 2px;"></Grid>发表于 <span
+											style="padding-left: 2px;">2020-03-19</span> <span
+											style="padding: 0 6px;">|</span>
+										<Present style="height: 13px; width: 13px;"></Present> <span
+											style="padding-left: 2px;">jwt</span>
+									</div>
+									<div class="content">
+										JWT(JSON WEB TOKEN)的介绍与使用1. 什么是JWT JSON Web
+										Token(JWT)，是为了在网络应用环境间传递声明而执行的一种基于JSON的开放标准。该token被设计为紧凑而安全,特别适用于分
+									</div>
+								</div>
+							</div>
+						</el-card>
+						<el-card class="post-item">
+							<el-image class="post-cover" @click="goDetail"></el-image>
+							<div class="post-item-right">
+								<div class="recent-post-info">
+									<div class="article-title" @click="goDetail">JWT的介绍与使用</div>
+									<div class="article-meta-wrap">
+										<Grid style="height: 13px; width: 13px; padding-right: 2px;"></Grid>发表于 <span
+											style="padding-left: 2px;">2020-03-19</span> <span
+											style="padding: 0 6px;">|</span>
+										<Present style="height: 13px; width: 13px;"></Present> <span
+											style="padding-left: 2px;">jwt</span>
+									</div>
+									<div class="content">
+										JWT(JSON WEB TOKEN)的介绍与使用1. 什么是JWT JSON Web
+										Token(JWT)，是为了在网络应用环境间传递声明而执行的一种基于JSON的开放标准。该token被设计为紧凑而安全,特别适用于分
+									</div>
+								</div>
+							</div>
 						</el-card>
 						<div class="page-wrapper">
-							<el-pagination :hide-on-single-page="true" background  layout="prev, pager, next" :total="50" />
+							<el-pagination :hide-on-single-page="true" background layout="prev, pager, next" :total="50" />
 						</div>
 					</el-col>
 					<el-col :span="6">
 						<el-card class="card-box" style="height: 360px;">
 							<div class="user-wrapper">
-								<el-avatar 
-								shape="circle" 
-								:size="110"  
-								:src="defaultAvatar" 
-								fit="fill"
-								@mouseover="rotateClockwise" 
-  								@mouseleave="rotateCounterclockwise"/>
+								<el-avatar shape="circle" :size="110" :src="defaultAvatar" fit="fill"
+									@mouseover="rotateClockwise" @mouseleave="rotateCounterclockwise" />
 								<div class="user-name">Cystrix</div>
 								<div class="user-statistics">
 									<div class="item">
@@ -68,19 +73,20 @@
 										<div class="item-two">6</div>
 									</div>
 								</div>
-								<div class="user-followme"> <el-image :src="githubWhiteIcon" style="height: 20px; width: 20px; margin-right: 5px;"/> Follow Me</div>
-								<div style="margin-top: 20px; display: flex; justify-content: center; align-items: center;"> 
-									<el-image :src="githubIcon" style="height: 20px; width: 20px;"></el-image> 
+								<div class="user-followme"> <el-image :src="githubWhiteIcon"
+										style="height: 20px; width: 20px; margin-right: 5px;" /> Follow Me</div>
+								<div style="margin-top: 20px; display: flex; justify-content: center; align-items: center;">
+									<el-image :src="githubIcon" style="height: 20px; width: 20px;"></el-image>
 									<div style="width: 20px;"></div>
 									<el-image :src="emailIcon" style="height: 20px; width: 20px; "></el-image>
 								</div>
 							</div>
 						</el-card>
 
-						<el-card class="card-box" >
+						<el-card class="card-box">
 							<div class="notice-wrapper">
 								<div class="card-hd">
-									<el-image class="notice-icon card-icon" :src="noticeIcon" ></el-image> 公告
+									<el-image class="notice-icon card-icon" :src="noticeIcon"></el-image> 公告
 								</div>
 								<div class="list">
 									<div class="item">
@@ -92,7 +98,7 @@
 						<el-card class="card-box">
 							<div class="article-wrapper">
 								<div class="card-hd">
-									<el-image class="card-icon" :src="timeIcon"/>
+									<el-image class="card-icon" :src="timeIcon" />
 									最新文章
 								</div>
 								<div class="article-list">
@@ -151,7 +157,7 @@
 								</div>
 							</div>
 						</el-card>
-						<el-card class="card-box" >
+						<el-card class="card-box">
 							<div class="archive-wrapper">
 								<div class="card-hd">
 									<el-image :src="archiveIcon" class="card-icon"></el-image>归档
@@ -216,8 +222,9 @@
 
 <script setup>
 import { onMounted, ref, onBeforeUnmount } from 'vue'
-import {useRouter} from 'vue-router'
-import defaultAvatar from  '@/assets/img/default_avatar.jpg'
+import { useRouter } from 'vue-router'
+import NavigateBar from '@/components/NavigateBar.vue'
+import defaultAvatar from '@/assets/img/default_avatar.jpg'
 import githubWhiteIcon from '@/assets/svg/github-white.svg'
 import githubIcon from '@/assets/svg/github.svg'
 import emailIcon from '@/assets/svg/email.svg'
@@ -228,13 +235,13 @@ import tagIcon from '@/assets/svg/tag.svg'
 import archiveIcon from '@/assets/svg/archive.svg'
 import zhexianIcon from '@/assets/svg/zhexian.svg'
 // 滚动条设置
-let lastScrollPosition = 0
-const isHdBoxVisible = ref(true)
+// let lastScrollPosition = 0
+// const isHdBoxVisible = ref(true)
 
-onMounted(() => {
-	window.scrollTo({ top: 0 })
-	window.addEventListener('scroll', handleScroll)
-})
+// onMounted(() => {
+// 	window.scrollTo({ top: 0 })
+// 	window.addEventListener('scroll', handleScroll)
+// })
 
 const scrollToContent = function () {
 	const contentBoxHeight = document.querySelector('.content-box').offsetTop;
@@ -244,25 +251,25 @@ const scrollToContent = function () {
 	})
 }
 
-const handleScroll = () => {
-	const newScrollPosition = window.scrollY
-	if (newScrollPosition < lastScrollPosition) {
-		isHdBoxVisible.value = true
-	} else {
-		isHdBoxVisible.value = false
-	}
-	lastScrollPosition = newScrollPosition
-}
+// const handleScroll = () => {
+// 	const newScrollPosition = window.scrollY
+// 	if (newScrollPosition < lastScrollPosition) {
+// 		isHdBoxVisible.value = true
+// 	} else {
+// 		isHdBoxVisible.value = false
+// 	}
+// 	lastScrollPosition = newScrollPosition
+// }
 
 // 用户头像旋转
 const rotateClockwise = () => {
-  const avatar = document.querySelector('.el-avatar');
-  avatar.style.transform = 'rotate(360deg)';
+	const avatar = document.querySelector('.el-avatar');
+	avatar.style.transform = 'rotate(360deg)';
 }
 
 const rotateCounterclockwise = () => {
-  const avatar = document.querySelector('.el-avatar');
-  avatar.style.transform = 'rotate(-360deg)';
+	const avatar = document.querySelector('.el-avatar');
+	avatar.style.transform = 'rotate(-360deg)';
 }
 
 // 刷新首页
@@ -273,9 +280,9 @@ const goIndex = () => {
 
 // 座右铭显示
 const mottoList = ref([])
-const motto = ref("今日事，今日毕")
+const motto = ref("Don't go gentle into that good night")
 const mottoDisplay = ref('')
-const isBlink = ref(false)
+const isBlink = ref(false) // 控制光标闪烁
 // const mottoDisplayTimer = setInterval(()=>{
 // 	if(flag) {
 // 		mottoDisplay.value = motto.value.substring(0, index++)
@@ -298,32 +305,31 @@ const isBlink = ref(false)
 // 		console.log(err)
 // 	})
 // }
-const mottoDisplayHandler = function() {
-	return new Promise((resolve)=>{
+const mottoDisplayHandler = function () {
+	return new Promise((resolve) => {
 		// motto 长度不能为0！
 		let length = motto.value.length + 1
 		let index = 1
-		let timer = setInterval(()=>{
-			if(length !== index ) {
+		let timer = setInterval(() => {
+			if (length !== index) {
 				mottoDisplay.value = motto.value.substring(0, index++)
-			}else {
+			} else {
 				resolve(timer)
 			}
 		}, 200)
 	})
 }
-const mottoHiddenHandler = function() {
-	return new Promise((resolve)=>{
+const mottoHiddenHandler = function () {
+	return new Promise((resolve) => {
 		let length = motto.value.length
 		let index = length
-		let disapperTime = 1000 // ms
-		let timer = setInterval(()=>{
-			if(index >= 0) {
+		let timer = setInterval(() => {
+			if (index >= 0) {
 				mottoDisplay.value = motto.value.substring(0, index--)
-			}else {
+			} else {
 				resolve(timer)
 			}
-		}, disapperTime / length)
+		}, 50)
 	})
 }
 
@@ -332,12 +338,12 @@ function sleep(ms) {
 	return new Promise(resolve => setTimeout(resolve, ms))
 }
 
-const loopDisplay = function() {
+const loopDisplay = function () {
 	mottoDisplayHandler().then(timer => {
 		clearInterval(timer)
 		isBlink.value = true
 		// 睡一秒执行 mottohidden 操作
-		sleep(1000).then(()=>{
+		sleep(1000).then(() => {
 			isBlink.value = false
 			mottoHiddenHandler().then(timer => {
 				clearInterval(timer)
@@ -348,19 +354,20 @@ const loopDisplay = function() {
 }
 loopDisplay()
 
+// 去文章详情页
+const goDetail = () => {
+	router.push({ name: 'articleDetail' })
+}
 
 
 
-
-onBeforeUnmount(()=>{
+onBeforeUnmount(() => {
 	// mottoDisplayTimer.clear()
 	// mottoHidenTimmer.clear()
 })
 </script>
 
 <style scoped lang="scss">
-
-
 @keyframes bounce {
 	0% {
 		transform: translateY(0);
@@ -375,15 +382,7 @@ onBeforeUnmount(()=>{
 	}
 }
 
-@keyframes fadeIn {
-	0% {
-		opacity: 0;
-	}
 
-	100% {
-		opacity: 1;
-	}
-}
 
 @keyframes slideDown {
 	0% {
@@ -399,6 +398,7 @@ onBeforeUnmount(()=>{
 	0% {
 		background-position: 0% 0;
 	}
+
 	100% {
 		background-position: 100% 0;
 	}
@@ -415,34 +415,41 @@ onBeforeUnmount(()=>{
 }
 
 @keyframes typing {
-	from { width: 0 }
-	to { width: 100% }
+	from {
+		width: 0
+	}
+
+	to {
+		width: 100%
+	}
 }
 
 @keyframes blink-animation {
-  50% {
-    opacity: 0;
-  }
+	50% {
+		opacity: 0;
+	}
 }
 
 .el-avatar {
-  transition: transform 0.5s ease; // 开始慢，中间快，结束慢
-  transition-delay: 0s;
+	transition: transform 0.5s ease; // 开始慢，中间快，结束慢
+	transition-delay: 0s;
 }
+
 .el-avatar:hover {
 	transform: rotate(360deg);
 }
 
 .card-hd {
-	display: flex; 
+	display: flex;
 	align-items: center;
 	height: 30px;
 	margin-bottom: 5px;
 	font-size: 17px;
 }
+
 .card-icon {
-	height: 20px; 
-	width: 20px; 
+	height: 20px;
+	width: 20px;
 	margin-right: 7px;
 }
 
@@ -465,6 +472,7 @@ onBeforeUnmount(()=>{
 	display: inline-block;
 	transform: translateX(-100%);
 }
+
 .type-cursor-blink {
 	animation: blink-animation 0.5s ease infinite;
 }
@@ -477,40 +485,6 @@ onBeforeUnmount(()=>{
 	background-position: center;
 	background-attachment: fixed;
 	color: #4C4948;
-	.hd-box {
-		position: fixed;
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-		top: 0;
-		width: 100%;
-		height: 60px;
-		padding: 0 36px;
-		background-color: transparent;
-		color: #fff;
-		animation: fadeIn 1s ease-in-out, slideDown 1s ease-in-out;
-
-		&__left {
-			font-size: 18.2px;
-			font-weight: 700;
-			cursor: pointer;
-		}
-
-		&__right {
-			display: flex;
-			justify-content: flex-end;
-			padding-right: 46px;
-			align-items: center;
-			font-size: 14.2px;
-
-			.item {
-				display: flex;
-				cursor: pointer;
-				align-items: center;
-				width: 70px;
-			}
-		}
-	}
 
 	.blog-name {
 		position: absolute;
@@ -532,6 +506,7 @@ onBeforeUnmount(()=>{
 		font-size: 25px;
 		color: #fff;
 		animation: bounce 1.5s infinite;
+		cursor: pointer;
 	}
 
 	.main {
@@ -540,30 +515,91 @@ onBeforeUnmount(()=>{
 		width: 100%;
 		min-height: 100vh;
 		background-color: #fff;
+
 		.content-box {
-			padding-top: 20px;
+			padding-top: 40px;
 			max-width: 1200px;
 			margin: 0 auto;
+
 			.post-wrapper {
+				.post-item {
+					display: flex;
+					width: 877px;
+					height: 280px;
+					margin-bottom: 20px;
+					flex-direction: row;
+
+					.post-cover {
+						width: 395px;
+						height: 280px;
+
+						&:hover {
+							cursor: pointer;
+						}
+					}
+
+					&-right {
+						height: 280px;
+						padding: 0 40px;
+
+						.recent-post-info {
+							height: 100%;
+							display: flex;
+							flex-direction: column;
+							justify-content: center;
+
+							.article-title {
+								font-size: 24px;
+								margin-bottom: 6px;
+
+								&:hover {
+									cursor: pointer;
+								}
+							}
+
+							.article-meta-wrap {
+								display: flex;
+								height: 25px;
+								align-items: center;
+								color: rgb(133, 133, 133);
+							}
+
+							.content {
+								height: 84px;
+								width: 403px;
+								margin-top: 6px;
+								color: rgb(76, 73, 72);
+								font-size: 14px;
+								overflow-y: hidden;
+								overflow-x: hidden;
+							}
+						}
+					}
+				}
+
 				.page-wrapper {
 					display: flex;
 					justify-content: center;
 					margin-top: 20px;
 				}
 			}
+
 			.card-box {
 				margin-bottom: 20px;
+
 				.user-wrapper {
 					display: flex;
 					flex-direction: column;
 					justify-content: center;
 					align-items: center;
+
 					.user-name {
 						height: 44px;
 						line-height: 44px;
 						font-size: 22px;
 						font-weight: 500;
 					}
+
 					.user-followme {
 						display: flex;
 						justify-content: center;
@@ -586,16 +622,19 @@ onBeforeUnmount(()=>{
 						display: flex;
 						justify-content: center;
 						margin-top: 5px;
+
 						.item {
 							width: 77px;
 							display: flex;
-							flex-direction: column; 
-							justify-content: center; 
+							flex-direction: column;
+							justify-content: center;
 							align-items: center;
+
 							&-one {
 								height: 28px;
 								font-size: 14px;
 							}
+
 							&-two {
 								height: 40px;
 								font-size: 19px;
@@ -607,39 +646,43 @@ onBeforeUnmount(()=>{
 				.notice-wrapper {
 					display: flex;
 					flex-direction: column;
-					
-					.notice-icon {
-						animation: pluse 0.5s infinite alternate; 
-					}
-					.list {
-						// margin-top: 10px;
-						.item {
 
-						}
+					.notice-icon {
+						animation: pluse 0.5s infinite alternate;
+					}
+
+					.list {
+
+						// margin-top: 10px;
+						.item {}
 					}
 				}
-				
+
 				.article-wrapper {
 					font-size: 17px;
+
 					.article-list {
 						.article-item {
 							display: flex;
 							height: 66px;
 							width: 230px;
+
 							.item-right {
 								display: flex;
 								flex-direction: column;
 								justify-content: center;
+
 								&-one {
-									font-size: 14px; 
-									height: 19px; 
-									color: rgb(76, 73, 72); 
+									font-size: 14px;
+									height: 19px;
+									color: rgb(76, 73, 72);
 									line-height: 19px;
 								}
+
 								&-two {
-									font-size: 12px; 
-									color: rgb(133, 133, 133); 
-									height: 24px; 
+									font-size: 12px;
+									color: rgb(133, 133, 133);
+									height: 24px;
 									line-height: 24px;
 								}
 							}
@@ -651,12 +694,13 @@ onBeforeUnmount(()=>{
 					.category-list {
 						color: #4C4948;
 						font-size: 14px;
+
 						.category-item {
 							display: flex;
 							justify-content: space-between;
 							align-items: center;
 							height: 28px;
-							
+
 						}
 					}
 				}
@@ -664,6 +708,7 @@ onBeforeUnmount(()=>{
 				.tag-wrapper {
 					.tag-cloud {
 						width: 243px;
+
 						.tag-item {
 							font-size: 15.4px;
 							height: 30.8px;
@@ -675,6 +720,7 @@ onBeforeUnmount(()=>{
 				.archive-wrapper {
 					.archive-list {
 						width: 243px;
+
 						.archive-item {
 							display: flex;
 							justify-content: space-between;
@@ -683,10 +729,13 @@ onBeforeUnmount(()=>{
 						}
 					}
 				}
+
 				.website-wrapper {
 					font-size: 14px;
+
 					.website-info {
 						width: 243px;
+
 						&-item {
 							display: flex;
 							justify-content: space-between;
@@ -702,6 +751,7 @@ onBeforeUnmount(()=>{
 			background-image: url('@/assets/img/index_bg.png');
 			background-size: cover;
 			background-position: center bottom;
+
 			&-wrapper {
 				height: 100%;
 				display: flex;
@@ -723,4 +773,17 @@ onBeforeUnmount(()=>{
 	:deep(.el-card:hover) {
 		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.30); // 加深阴影
 	}
+
+	:deep(.el-card__body.post-item) {
+		box-sizing: border-box;
+		// display: flex;
+		// width: 879px;
+	}
+
+	:deep(.post-item > .el-card__body) {
+		padding: 0;
+		width: 877px;
+		display: flex;
+	}
+
 }</style>

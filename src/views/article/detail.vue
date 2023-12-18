@@ -1,13 +1,12 @@
 <template>
-	<div>
+	<div class="wrapper">
 		
 	</div>
 </template>
-<script>
-export default {
-	
-}
+<script setup>
 </script>
 <style lang="scss" scoped>
-	
+	.wrapper {
+
+	}
 </style>
