@@ -54,7 +54,7 @@
 						</div>
 					</el-col>
 					<el-col :span="6">
-						<el-card class="card-box" style="height: 360px;">
+						<el-card class="card-box">
 							<UserInfo></UserInfo>
 						</el-card>
 						<el-card class="card-box">
@@ -78,12 +78,7 @@
 					</el-col>
 				</el-row>
 			</div>
-			<div class="footer">
-				<div class="footer-wrapper">
-					<div class="copyright">©2023-2025&nbsp;By&nbsp;Cystrix</div>
-					<div>Hi,&nbsp;welcome&nbsp;to&nbsp;cystrix's&nbsp;blog</div>
-				</div>
-			</div>
+			<Footer></Footer>
 		</div>
 	</div>
 </template>
@@ -99,7 +94,7 @@ import LatestArticle from '@/components/LatestArticle.vue'
 import Tag from '@/components/TagCard.vue'
 import Archive from '@/components/ArchiveCard.vue'
 import WebInfo from '@/components/WebInfo.vue'
-
+import Footer from '@/components/layout/footer.vue'
 
 //跳转到正文部分
 const scrollToContent = function () {
@@ -366,22 +361,6 @@ onBeforeUnmount(() => {
 			}
 		}
 
-		.footer {
-			height: 164px;
-			background-image: url('@/assets/img/index_bg.png');
-			background-size: cover;
-			background-position: center bottom;
-
-			&-wrapper {
-				height: 100%;
-				display: flex;
-				justify-content: center;
-				flex-direction: column;
-				align-items: center;
-				color: #fff;
-				font-size: 14px;
-			}
-		}
 	}
 
 	:deep(.el-card) {
