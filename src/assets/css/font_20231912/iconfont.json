@@ -1,0 +1,16 @@
+{
+  "id": "4379448",
+  "name": "cb",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "4114002",
+      "name": "circle",
+      "font_class": "circle",
+      "unicode": "e67e",
+      "unicode_decimal": 59006
+    }
+  ]
+}

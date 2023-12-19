@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<div class="hd-box" v-show="isVisible" :class="classObject">
+		<div class="hd-box" v-show="isVisible" :class="clazzObj">
 			<div class="hd-box__left" @click="goIndex">
 				Cystrix's blog
 			</div>
@@ -8,13 +8,13 @@
 				<div class="item">
 					<HomeFilled style="width: 1.2em; height: 1.2em; margin-right: 5px;" /> 首页
 				</div>
-				<div class="item" style="margin-right: 10px;">
+				<div class="item" style="margin-right: 10px;"  @click="goArchive">
 					<Suitcase style="width: 1.2em; height: 1.2em; margin-right: 5px;" /> 时间轴
 				</div>
-				<div class="item">
+				<div class="item" @click="goTag">
 					<PriceTag style="width: 1.2em; height: 1.2em; margin-right: 5px;" /> 标签
 				</div>
-				<div class="item">
+				<div class="item" @click="goCategory">
 					<FolderOpened style="width: 1.2em; height: 1.2em; margin-right: 5px;" /> 分类
 				</div>
 				<div class="item">
@@ -42,7 +42,7 @@ onMounted(() => {
 	window.addEventListener('scroll', handleScroll)
 })
 
-const classObject = computed(() => ({
+const clazzObj = computed(() => ({
 	bgColor: hasBgColor.value,
 }))
 const handleScroll = () => {
@@ -64,7 +64,25 @@ const handleScroll = () => {
 // 刷新首页
 const router = useRouter()
 const goIndex = () => {
-	router.go(0)
+	if(router.currentRoute.value.name === 'index') {
+		location.reload()
+	}else {
+		router.push({name: 'index'})
+	}
+}
+
+//去标签页面
+const goTag = () => {
+	router.push({name: 'tags'})
+}
+
+const goCategory = () => {
+	router.push({name: 'categories'})
+}
+
+// 去归档页面
+const goArchive = () => {
+	router.push({name: 'archive'})
 }
 
 </script>
