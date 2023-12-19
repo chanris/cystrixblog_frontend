@@ -1,31 +1,29 @@
 <template>
-	<div>
-		<div class="hd-box" v-show="isVisible" :class="clazzObj">
-			<div class="hd-box__left" @click="goIndex">
-				Cystrix's blog
+	<div class="hd-box" ref="topNavigator" v-show="isVisible" :class="clazzObj">
+		<div class="hd-box__left" @click="goIndex">
+			Cystrix's blog
+		</div>
+		<div class="hd-box__right">
+			<div class="item" @click="goIndex">
+				<HomeFilled style="width: 1.2em; height: 1.2em; margin-right: 5px;"/> 首页
 			</div>
-			<div class="hd-box__right">
-				<div class="item">
-					<HomeFilled style="width: 1.2em; height: 1.2em; margin-right: 5px;" /> 首页
-				</div>
-				<div class="item" style="margin-right: 10px;"  @click="goArchive">
-					<Suitcase style="width: 1.2em; height: 1.2em; margin-right: 5px;" /> 时间轴
-				</div>
-				<div class="item" @click="goTag">
-					<PriceTag style="width: 1.2em; height: 1.2em; margin-right: 5px;" /> 标签
-				</div>
-				<div class="item" @click="goCategory">
-					<FolderOpened style="width: 1.2em; height: 1.2em; margin-right: 5px;" /> 分类
-				</div>
-				<div class="item">
-					<ChatLineSquare style="width: 1.2em; height: 1.2em; margin-right: 5px;" /> 清单
-				</div>
-				<div class="item">
-					<Paperclip style="width: 1.2em; height: 1.2em; margin-right: 5px;" /> 友链
-				</div>
-				<div class="item">
-					<Apple style="width: 1.2em; height: 1.2em; margin-right: 5px;" /> 关于
-				</div>
+			<div class="item" style="margin-right: 10px;"  @click="goArchive">
+				<Suitcase style="width: 1.2em; height: 1.2em; margin-right: 5px;" /> 时间轴
+			</div>
+			<div class="item" @click="goTag">
+				<PriceTag style="width: 1.2em; height: 1.2em; margin-right: 5px;" /> 标签
+			</div>
+			<div class="item" @click="goCategory">
+				<FolderOpened style="width: 1.2em; height: 1.2em; margin-right: 5px;" /> 分类
+			</div>
+			<div class="item">
+				<ChatLineSquare style="width: 1.2em; height: 1.2em; margin-right: 5px;" /> 清单
+			</div>
+			<div class="item">
+				<Paperclip style="width: 1.2em; height: 1.2em; margin-right: 5px;" /> 友链
+			</div>
+			<div class="item">
+				<Apple style="width: 1.2em; height: 1.2em; margin-right: 5px;" /> 关于
 			</div>
 		</div>
 	</div>
@@ -42,8 +40,10 @@ onMounted(() => {
 	window.addEventListener('scroll', handleScroll)
 })
 
+// const topNavigator = ref(null) // vue3中 this.$refs.的用法
+
 const clazzObj = computed(() => ({
-	bgColor: hasBgColor.value,
+	bgColor: hasBgColor.value
 }))
 const handleScroll = () => {
 	const newScrollPosition = window.scrollY
@@ -111,7 +111,6 @@ const goArchive = () => {
 	background-color: rgba(255, 255, 255, 0.8) !important;
 	box-shadow: rgba(133, 133, 133, 0.6) 0px 5px 6px -5px;
 	color: #4C4948 !important;
-	// transition: background-color 0.5s ease;
 }
 .white {
 	color: #fff;
@@ -132,7 +131,12 @@ const goArchive = () => {
 	background-color: transparent;
 	color: #fff;
 	animation: fadeIn 1s ease-in-out, slideDown 1s ease-in-out;
-	z-index: 3;
+	// transition: opacity 3s ease-in-out;
+	z-index: 9;
+
+	// .hidden {
+	// 	opacity: 0;
+	// }
 
 	&__left {
 		font-size: 18.2px;

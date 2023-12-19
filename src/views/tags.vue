@@ -55,7 +55,7 @@
 	</div>
 </template>
 <script setup>
-import NavigateBar from '@/components/NavigateBar.vue'
+import NavigateBar from '@/components/layout/NavigateBar.vue'
 import UserInfo from '@/components/UserInfo.vue'
 import Notice from '@/components/Notice.vue'
 import Catageory from '@/components/CategoryCard.vue'
