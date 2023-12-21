@@ -27,7 +27,12 @@ const router = createRouter({
       path: '/archive',
       name: 'archive',
       component: () => import('@/views/archive.vue')
-    }
+    },
+	{
+		path: '/admin/login',
+		name: 'login',
+		component: () => import('@/views/admin/login.vue')
+	}
   ],
 })
 

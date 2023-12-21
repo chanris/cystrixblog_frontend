@@ -184,7 +184,6 @@ loopDisplay()
 // 去文章详情页
 const router = useRouter()
 const goDetail = () => {
-	console.log('tirgger...')
 	router.push({ name: 'articleDetail' })
 }
 

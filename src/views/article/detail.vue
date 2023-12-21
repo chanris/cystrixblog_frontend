@@ -12,7 +12,7 @@
 			<div class="content-box">
 				<el-row>
 					<el-col :span="18" class="post-wrapper">
-						<el-card class="post-content">
+						<el-card class="post-content" v-loading="loading">
 							<v-md-preview :text="text" ></v-md-preview>
 							<div class="post-info">
 								<div class="author"> 
@@ -46,21 +46,25 @@
 	</div>
 </template>
 <script setup>
-import NavigateBar from '@/components/NavigateBar.vue'
+import NavigateBar from '@/components/layout/NavigateBar.vue'
 import UserInfo from '@/components/UserInfo.vue'
 import Notice from '@/components/Notice.vue'
 import LatestArticle from '@/components/LatestArticle.vue'
 import Footer from '@/components/layout/footer.vue'
 import copyrightIcon from '@/assets/svg/copyright.svg'
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
+import { getArticleDetail } from '@/api/article.js'
 
-const text = ref(`
-# cystrixblog_frontend
-> cystrixblog 使用 前后端分离架构
-## 前端技术 
-### Vue 
-> Vue是近年来比较热门的mvvm框架。
-`)
+onMounted(()=>{
+	getArticleDetail({id: 39}).then(({result})=>{
+		text.value = result.content
+	}).finally(()=>{
+		loading.value = false
+	})
+})
+
+const text = ref('')
+const loading = ref(true)
 
 </script>
 <style lang="scss" scoped>
