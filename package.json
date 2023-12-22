@@ -12,6 +12,7 @@
     "@kangc/v-md-editor": "^2.3.18",
     "axios": "^1.6.2",
     "element-plus": "^2.4.3",
+    "jwt-decode": "^4.0.0",
     "vue": "^3.3.10",
     "vue-router": "^4.2.5",
     "vuex": "^4.1.0"

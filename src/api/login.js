@@ -8,3 +8,11 @@ export function getVerificationCode(params) {
 		data: params
 	})
 }
+
+export function loginWithEmailCode(params) {
+	return request({
+		url: '/admin/user/login',
+		method: 'post',
+		data: params
+	})
+}
