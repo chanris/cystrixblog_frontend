@@ -1,10 +1,10 @@
 <template>
 	<div>
-		<h1>首页</h1>
+		<h2>分类</h2>
 	</div>
 </template>
-<script>
+<script setup>
 </script>
 <style lang="scss" scoped>
-
+	
 </style>

@@ -1,7 +1,7 @@
 <script setup>
 import { useStore } from 'vuex'
 const store = useStore()
-const user = window.localStorage.getItem('user')
+const user = window.sessionStorage.getItem('user')
 user && store.dispatch('setLoginInfo', JSON.parse(user))
 </script>
 

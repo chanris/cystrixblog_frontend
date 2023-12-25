@@ -42,8 +42,35 @@ const router = createRouter({
 	},
 	{
 		path: '/admin',
-		name: 'adminHome',
-		component: () => import('@/views/admin/home.vue')
+		name: 'adminIndex',
+		component: () => import('@/views/admin/index.vue'),
+		children: [
+			{
+				path: '/home',
+				name: 'adminHome',
+				component: () => import('@/views/admin/home.vue')
+			},
+			{
+				path: '/article',
+				name: 'adminArticle',
+				component: () => import('@/views/admin/article/index.vue'),
+			},
+			{
+				path: '/article/add',
+				name: 'adminArtileAdd',
+				component: () => import('@/views/admin/article/addArticle.vue')
+			},
+			{
+				path: '/tag',
+				name: 'adminTag',
+				component: () => import('@/views/admin/tag/index.vue')
+			},
+			{
+				path: '/category',
+				name: 'adminCategory',
+				component: () => import('@/views/admin/category/index.vue')
+			}
+		]
 	}
   ],
 })
@@ -58,7 +85,7 @@ router.beforeEach((to, from, next) => {
 			if(token && new Date().getTime() < exp) {
 				next()
 			}else {
-				next('/admin/login')
+				next('/login')
 			}
 		}else {
 			next()

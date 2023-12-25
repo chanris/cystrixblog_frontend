@@ -99,10 +99,10 @@ const doLogin = (formEl) => {
 			submitLoading.value = true
 			loginWithEmailCode(loginForm.value).then((resp)=>{
 				if(resp.code === 200) {
-					window.localStorage.setItem('user', JSON.stringify(resp.result))
-					window.localStorage.setItem('token', resp.result.token)
+					window.sessionStorage.setItem('user', JSON.stringify(resp.result))
+					window.sessionStorage.setItem('token', resp.result.token)
 					store.dispatch('setLoginInfo', resp.result)
-					router.push({name: 'adminHome'})
+					router.push({name: 'adminIndex'})
 					ElMessage({
 						type: 'success',
 						message: '登录成功'
