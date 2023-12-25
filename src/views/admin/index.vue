@@ -38,7 +38,18 @@
 				</el-menu>
 			</div>
 			<div class="content-box">
-				<div class="crumb"></div>
+				<div class="crumb">
+					<el-breadcrumb :separator-icon="ArrowRight">
+						<el-breadcrumb-item :to="{ name: 'adminHome' }">首页</el-breadcrumb-item>
+						<template v-for="(item, index) in breadList">
+							<el-breadcrumb-item
+								v-if="item.name"
+								:key="index"
+								:to="{name: item.name}"
+							>{{ item.meta.title }}</el-breadcrumb-item>
+						</template>
+					</el-breadcrumb>
+				</div>
 				<div class="content">
 					<router-view></router-view>
 				</div>
@@ -47,9 +58,11 @@
 	</div>
 </template>
 <script setup>
-import { useRouter } from 'vue-router';
-
+import { useRouter, useRoute } from 'vue-router';
+import {onMounted, watch, ref } from 'vue'
 const router = useRouter()
+const route = useRoute()
+
 const goHome = () => {
 	router.push({name: 'adminHome'})	
 }
@@ -63,6 +76,21 @@ const goCategory = () => {
 const goTag = () => {
 	router.push({name: 'adminTag'})
 }
+
+const breadList = ref([])
+
+const getMatched = () => {
+	console.log('route.matched', route.matched)
+	breadList.value = route.matched.filter(item => item.meta && item.meta.title)
+}
+onMounted(()=> {
+	getMatched()
+})
+watch(() => route.path, (newValue, oldValue) => { //监听路由路径是否发生变化，之后更改面包屑
+  breadList.value = route.matched.filter(item => item.meta && item.meta.title);
+  console.log(breadList.value)
+})
+
 </script>
 <style lang="scss" scoped>
 .box {
@@ -107,9 +135,14 @@ const goTag = () => {
 			width: calc(100% - 245px);
 
 			.crumb {
+				display: flex;
+				align-items: center;
+				font-size: 16px;
+				font-weight: 500;
 				height: 20px;
 				width: 100%;
 				margin: 15px 0;
+				padding-left: 5px;
 				background: transparent;
 				border-left: 4px solid #0076D9;
 			}

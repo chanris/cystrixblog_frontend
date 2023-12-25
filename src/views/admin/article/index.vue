@@ -5,15 +5,15 @@
 				<el-form-item label="文章名称">
 					<el-input v-model="searchData.name" />
 				</el-form-item>
-				<el-form-item label="发表日期">
+				<el-form-item label="发布日期">
 					<el-date-picker 
 						style="height: 40px;"
 						v-model="searchData.timeRange"
 						type="daterange"
 						unlink-panels
 						range-separator="->"
-						start-placeholder="Start date"
-						end-placeholder="End date"
+						start-placeholder="开始时间"
+						end-placeholder="结束时间"
 						:shortcuts="shortcuts"
 					/>
 				</el-form-item>
@@ -66,7 +66,6 @@ import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 
 const delConfirm = (scope) => {
-	console.log(scope)
 	ElMessage({
 		type: 'success',
 		message: '文章已删除'	

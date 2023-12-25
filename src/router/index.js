@@ -33,6 +33,7 @@ const router = createRouter({
 		name: 'login',
 		component: () => import('@/views/admin/login.vue'),
 		beforeEnter: (to, from, next) => {
+			// 已经登录跳转到后台首页
 			if(store.getters.token) {
 				next('/admin')
 			}else {
@@ -48,26 +49,31 @@ const router = createRouter({
 			{
 				path: '/home',
 				name: 'adminHome',
+				meta: { title: '首页'},
 				component: () => import('@/views/admin/home.vue')
 			},
 			{
 				path: '/article',
 				name: 'adminArticle',
+				meta: {title: '文章管理'},
 				component: () => import('@/views/admin/article/index.vue'),
 			},
 			{
 				path: '/article/add',
 				name: 'adminArtileAdd',
+				meta: { title: '添加文章'},
 				component: () => import('@/views/admin/article/addArticle.vue')
 			},
 			{
 				path: '/tag',
 				name: 'adminTag',
+				meta: { title: '标签管理'},
 				component: () => import('@/views/admin/tag/index.vue')
 			},
 			{
 				path: '/category',
 				name: 'adminCategory',
+				meta: { title: '分类管理'},
 				component: () => import('@/views/admin/category/index.vue')
 			}
 		]
