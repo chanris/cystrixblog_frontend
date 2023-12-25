@@ -2,17 +2,24 @@
 	<div class="box">
 		<div class="top">
 			<div class="left">
-				<el-image style="height: 50px; width: 50px;"></el-image>
+				<el-image style="height: 50px; width: 50px; margin-right: 5px;" :src="logo"></el-image>
 				Cystrix Blog后台管理系统
 			</div>
 			<div class="right">
-				<el-image style="height: 30px; width: 30px;"></el-image>
-				<span>xxx，你好</span>
+				<Avatar style="height: 20px; width: 20px; margin-right: 5px;"></Avatar>
+				<span ref="userRef">{{username}}，你好</span>
+				<el-popover
+					ref="popoverRef"
+					:virtual-ref="userRef"
+					trigger="click"
+					virtual-triggering>
+					<el-button link @click="logout">退出</el-button>
+				</el-popover>
 			</div>
 		</div>
 		<div class="main">
 			<div class="sidebar">
-				<el-menu default-active="1" class="el-menu-vertical-demo">
+				<el-menu default-active="1">
 					<el-menu-item index="1" @click="goHome">
 						<el-icon>
 							<document />
@@ -39,7 +46,7 @@
 			</div>
 			<div class="content-box">
 				<div class="crumb">
-					<el-breadcrumb :separator-icon="ArrowRight">
+					<el-breadcrumb >
 						<el-breadcrumb-item :to="{ name: 'adminHome' }">首页</el-breadcrumb-item>
 						<template v-for="(item, index) in breadList">
 							<el-breadcrumb-item
@@ -59,10 +66,12 @@
 </template>
 <script setup>
 import { useRouter, useRoute } from 'vue-router';
-import {onMounted, watch, ref } from 'vue'
+import {onMounted, watch, ref, computed } from 'vue'
+import { useStore } from 'vuex';
+import logo from '@/assets/img/logo.jpg'
 const router = useRouter()
 const route = useRoute()
-
+const store = useStore()
 const goHome = () => {
 	router.push({name: 'adminHome'})	
 }
@@ -82,13 +91,22 @@ const breadList = ref([])
 const getMatched = () => {
 	breadList.value = route.matched.filter(item => item.meta && item.meta.title)
 }
+const user = ref('')
 onMounted(()=> {
+	user.value = store.getters.user
 	getMatched()
 })
+const username = computed(() => { return user.value.username || '匿名用户' })
 watch(() => route.path, (newValue, oldValue) => { //监听路由路径是否发生变化，之后更改面包屑
   breadList.value = route.matched.filter(item => item.meta && item.meta.title);
 })
 
+const popoverRef = ref()
+const userRef = ref()
+const logout = () => {
+	store.dispatch('logout')
+	router.push({name: 'login'})
+}
 </script>
 <style lang="scss" scoped>
 .box {
@@ -114,6 +132,7 @@ watch(() => route.path, (newValue, oldValue) => { //监听路由路径是否发�
 			display: flex;
 			justify-content: flex-end;
 			align-items: center;
+			color: #fff;
 		}
 	}
 

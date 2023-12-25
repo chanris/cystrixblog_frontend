@@ -101,6 +101,7 @@ router.beforeEach((to, from, next) => {
 				next('/login')
 			}
 		}else {
+			console.log(to)
 			next()
 		}
 	}else {

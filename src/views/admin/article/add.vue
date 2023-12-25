@@ -16,7 +16,7 @@
 						<template v-else>
 							<el-input style="margin-bottom: 10px;" v-model="categoryName" class="option-input"
 								placeholder="请输入新标签名称" size="small" />
-							<el-button type="primary" size="small" @click="confirmCate">确认</el-button>
+							<el-button type="primary" size="small" @click="confirmCate">添加</el-button>
 							<el-button size="small" @click="clear">取消</el-button>
 						</template>
 					</template>
@@ -30,8 +30,7 @@
 					:data="data"
 					check-strictly
 					:render-after-expand="false"
-					show-checkbox
-				/>
+					show-checkbox/>
 			</div>
 			<el-button type="primary" @click="visible = true">发布</el-button>
 		</div>

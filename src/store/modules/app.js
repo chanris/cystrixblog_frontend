@@ -1,5 +1,5 @@
 import {jwtDecode} from 'jwt-decode'
-
+import router from '@/router'
 const app = {
 	state: {
 		user: null,
@@ -13,12 +13,21 @@ const app = {
 		SET_TOKEN: (state, token) => {
 			state.token = token
 			state.exp = jwtDecode(token).exp * 1000 // ms
+		},
+		CLEARALL: (state) => {
+			state.user = null
+			state.token = null
+			state.exp = null
+			sessionStorage.clear()
 		}
 	},
 	actions: {
 		setLoginInfo({commit}, user) {
 			commit('SET_USER', user)
 			commit('SET_TOKEN', user.token)
+		},
+		logout({commit}) {
+			commit('CLEARALL')
 		}
 	}
 }
