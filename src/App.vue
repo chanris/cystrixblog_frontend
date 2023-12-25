@@ -11,5 +11,6 @@ user && store.dispatch('setLoginInfo', JSON.parse(user))
 	</div>
 </template>
 
-<style scoped>
+<style lang="scss">
+
 </style>

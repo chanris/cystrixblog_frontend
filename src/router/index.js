@@ -45,33 +45,40 @@ const router = createRouter({
 		path: '/admin',
 		name: 'adminIndex',
 		component: () => import('@/views/admin/index.vue'),
+		redirect: '/admin',
 		children: [
 			{
-				path: '/home',
+				path: '',
 				name: 'adminHome',
 				meta: { title: '首页'},
 				component: () => import('@/views/admin/home.vue')
 			},
 			{
-				path: '/article',
+				path: 'article',
 				name: 'adminArticle',
 				meta: {title: '文章管理'},
 				component: () => import('@/views/admin/article/index.vue'),
 			},
 			{
-				path: '/article/add',
-				name: 'adminArtileAdd',
-				meta: { title: '添加文章'},
-				component: () => import('@/views/admin/article/addArticle.vue')
+				path: 'article/add',
+				name: 'adminArticleAdd',
+				meta: {title: '添加文章'},
+				component: () => import('@/views/admin/article/add.vue')
 			},
 			{
-				path: '/tag',
+				path: 'article/detail',
+				name: 'adminArtileDetail',
+				meta: { title: '文章详情'},
+				component: () => import('@/views/admin/article/detail.vue')
+			},
+			{
+				path: 'tag',
 				name: 'adminTag',
 				meta: { title: '标签管理'},
 				component: () => import('@/views/admin/tag/index.vue')
 			},
 			{
-				path: '/category',
+				path: 'category',
 				name: 'adminCategory',
 				meta: { title: '分类管理'},
 				component: () => import('@/views/admin/category/index.vue')

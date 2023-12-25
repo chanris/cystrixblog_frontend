@@ -80,7 +80,6 @@ const goTag = () => {
 const breadList = ref([])
 
 const getMatched = () => {
-	console.log('route.matched', route.matched)
 	breadList.value = route.matched.filter(item => item.meta && item.meta.title)
 }
 onMounted(()=> {
@@ -88,7 +87,6 @@ onMounted(()=> {
 })
 watch(() => route.path, (newValue, oldValue) => { //监听路由路径是否发生变化，之后更改面包屑
   breadList.value = route.matched.filter(item => item.meta && item.meta.title);
-  console.log(breadList.value)
 })
 
 </script>

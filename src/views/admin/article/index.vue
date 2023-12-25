@@ -25,7 +25,7 @@
 		</div>
 		<div class="list">
 			<div style="padding: 20px; border-bottom: 1px solid rgb(235, 238, 245);">
-				<el-button type="primary" style="height: 40px;" @click="addArticle">添加文章</el-button>
+				<el-button type="primary" style="height: 40px;" @click="goArticleAdd">添加文章</el-button>
 			</div>
 			<el-table :data="articleList" style="width: 100%">
 				<el-table-column fixed prop="index" label="序号" min-width="80" >
@@ -44,7 +44,7 @@
 				<!-- <el-table-column prop="address" label="热度排名" min-width="100" /> -->
 				<el-table-column fixed="right" label="操作" min-width="60">
 					<template #default="scope">
-						<el-button link type="primary" size="small">详情</el-button>
+						<el-button link type="primary" size="small" @click="goArticleDetail">详情</el-button>
 						<el-popconfirm title="确定要删除该文章？" @confirm="delConfirm(scope.row)">
 							<template #reference>
 								<el-button link type="danger" size="small">删除</el-button>
@@ -64,6 +64,7 @@
 import { ElMessage } from 'element-plus'
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
+
 
 const delConfirm = (scope) => {
 	ElMessage({
@@ -134,9 +135,13 @@ const articleList = ref([
 }
 ])
 const router = useRouter()
-const addArticle = () => {
-	router.push({name: 'adminArtileAdd'})
+const goArticleDetail = () => {
+	router.push({name: 'adminArtileDetail'})
 }
+const goArticleAdd = () => {
+	router.push({name: 'adminArticleAdd'})
+}
+
 </script>
 <style lang="scss" scoped>
 .container {
