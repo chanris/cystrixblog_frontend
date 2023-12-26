@@ -2,7 +2,21 @@
 	<div class="box">
 		<div class="form">
 			<div style="display: flex; align-items: center;"> <span style="width: 70px;">文章名称：</span>
-				<el-input style="width: 200px;" v-model="articleName" placeholder="请输入文章名称" clearable></el-input>
+				<el-input style="width: 200px;" v-model="title" placeholder="请输入文章名称" clearable></el-input>
+			</div>
+			<div style="display: flex; align-items: center;">
+				<span style="width: 37px;">摘要：</span>
+				<el-input
+					v-model="digest"
+					:autosize="{ minRows: 1, maxRows: 4 }"
+					resize="none"
+					clearable
+					type="textarea"
+					placeholder="文章摘要（限量两百字）"
+					maxlength="200"
+					style="width: 300px;"
+					
+				/>
 			</div>
 			<div style="display: flex; align-items: center;"> <span style="width: 45px;">标签：</span>
 				<el-select v-model="value4" multiple collapse-tags collapse-tags-tooltip :max-collapse-tags="2"
@@ -10,13 +24,13 @@
 					<el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value" />
 
 					<template #footer>
-						<el-button v-if="!isAddCate" text bg size="small" @click="isAddCate = true">
+						<el-button v-if="!isAddTag" text bg size="small" @click="isAddTag = true">
 							新建标签
 						</el-button>
 						<template v-else>
-							<el-input style="margin-bottom: 10px;" v-model="categoryName" class="option-input"
+							<el-input style="margin-bottom: 10px;" v-model="tagName" class="option-input"
 								placeholder="请输入新标签名称" size="small" />
-							<el-button type="primary" size="small" @click="confirmCate">添加</el-button>
+							<el-button type="primary" size="small" @click="confirmTag">添加</el-button>
 							<el-button size="small" @click="clear">取消</el-button>
 						</template>
 					</template>
@@ -35,22 +49,23 @@
 			<el-button type="primary" @click="visible = true">发布</el-button>
 		</div>
 		<div>
-			<v-md-editor v-model="text" height="790px"></v-md-editor>
+			<v-md-editor v-model="content" height="790px"></v-md-editor>
 		</div>
 	</div>
 </template>
 <script setup>
 
 import { ref } from 'vue'
-const text = ref('')
-const articleName = ref('')
-const isAddCate = ref(false)
+const content = ref('')
+const title = ref('')
+const digest = ref('')
+const isAddTag = ref(false)
 const value4 = ref([])
-const categoryName = ref('')
+const tagName = ref('')
 
 const clear = () => {
-	categoryName.value = ''
-	isAddCate.value = false
+	tagName.value = ''
+	isAddTag.value = false
 }
 const options = ref([
 	{
@@ -147,12 +162,11 @@ const data = [
     ],
   },
 ]
-const confirmCate = () => {
-	if (categoryName.value) {
-		console.log(categoryName.value)
+const confirmTag = () => {
+	if (tagName.value) {
 		options.value.push({
-			label: categoryName.value,
-			value: categoryName.value,
+			label: tagName.value,
+			value: tagName.value,
 		})
 		clear()
 	}
@@ -168,7 +182,7 @@ const confirmCate = () => {
 		padding: 20px 20px;
 		display: flex;
 		justify-content: space-between;
-		align-items: center;
+		align-items: flex-start; 
 		margin: 0 0 10px;
 		background-color: #fff;
 	}

@@ -15,3 +15,29 @@ export function getArticleDetail(params) {
 		data: params
 	})
 }
+
+/********************** admin api ********************* */
+export function _getArticleList(params) {
+	return request({
+		url: '/admin/article/list',
+		method: 'post',
+		data: params
+	})
+}
+
+export function _getArticleDetail(params) {
+	return request({
+		url: '/admin/article/detail',
+		method: 'post',
+		data: params
+	})
+}
+
+export function _removeArticle(params) {
+	return request({
+		url: '/admin/article/remove',
+		method: 'post',
+		data: params
+	})
+}
+

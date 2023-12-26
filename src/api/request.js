@@ -1,4 +1,5 @@
 import axios from 'axios'
+import store from '@/store'
 
 import {ElMessage} from 'element-plus'
 var errorMsg = null // 控制只显示一个错误提示
@@ -12,6 +13,11 @@ const service = axios.create({
 service.interceptors.request.use(
 	config => {
 		// 在发送请求之前做些什么
+		// console.log(config)
+		store.getters.token && (config.headers['authorization'] = store.getters.token) 
+		!config.headers['Content-Type'] && (config.headers['Content-Type'] = 'application/json;charset=utf-8')
+		config.headers['Pragma'] = 'no-cache'
+		config.headers['If-Modified-Since'] = 0
 		return config
 	},
 	error => {

@@ -45,7 +45,7 @@ const router = createRouter({
 		path: '/admin',
 		name: 'adminIndex',
 		component: () => import('@/views/admin/index.vue'),
-		redirect: '/admin',
+		// redirect: '/admin',
 		children: [
 			{
 				path: '',
@@ -66,7 +66,7 @@ const router = createRouter({
 				component: () => import('@/views/admin/article/add.vue')
 			},
 			{
-				path: 'article/detail',
+				path: 'article/detail/:id',
 				name: 'adminArtileDetail',
 				meta: { title: '文章详情'},
 				component: () => import('@/views/admin/article/detail.vue')
@@ -95,13 +95,15 @@ router.beforeEach((to, from, next) => {
 		if(to.name.startsWith('admin')) {
 			const token = store.getters.token
 			const exp = store.getters.exp
+			// console.log(to)
 			if(token && new Date().getTime() < exp) {
 				next()
 			}else {
+				// 过期 清除token
+				store.dispatch('logout')
 				next('/login')
 			}
 		}else {
-			console.log(to)
 			next()
 		}
 	}else {
