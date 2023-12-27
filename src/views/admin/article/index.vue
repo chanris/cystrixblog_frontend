@@ -79,7 +79,7 @@ const removeArticle = (params) => {
 		if(res.code === 200) {
 			ElMessage({
 				type: 'success',
-				message: '文章已删除'	
+				message: '文章已删除'
 			})
 		}
 	}).finally(()=>{

@@ -2,7 +2,7 @@
 	<div class="box">
 		<div class="form">
 			<div style="display: flex; align-items: center;"> <span style="width: 70px;">文章名称：</span>
-				<el-input style="width: 200px;" v-model="title" placeholder="请输入文章名称" clearable></el-input>
+				<el-input style="width: 200px;" maxlength="30" v-model="title" placeholder="请输入文章名称" clearable></el-input>
 			</div>
 			<div style="display: flex; align-items: center;">
 				<span style="width: 37px;">摘要：</span>
@@ -19,17 +19,17 @@
 				/>
 			</div>
 			<div style="display: flex; align-items: center;"> <span style="width: 45px;">标签：</span>
-				<el-select v-model="value4" multiple collapse-tags collapse-tags-tooltip :max-collapse-tags="2"
+				<el-select v-loading="loading" v-model="tagVal" multiple collapse-tags collapse-tags-tooltip :max-collapse-tags="2"
 					placeholder="请选择标签" style="width: 240px">
-					<el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value" />
+					<el-option v-for="item in tagList" :key="item.value" :label="item.label" :value="item.value" />
 
 					<template #footer>
 						<el-button v-if="!isAddTag" text bg size="small" @click="isAddTag = true">
 							新建标签
 						</el-button>
 						<template v-else>
-							<el-input style="margin-bottom: 10px;" v-model="tagName" class="option-input"
-								placeholder="请输入新标签名称" size="small" />
+							<el-input style="margin-bottom: 10px;" v-model="tagName"  maxlength="15"
+								placeholder="请输入新标签名称" size="small" clearable />
 							<el-button type="primary" size="small" @click="confirmTag">添加</el-button>
 							<el-button size="small" @click="clear">取消</el-button>
 						</template>
@@ -40,8 +40,9 @@
 				<span>分类：</span>
 				<el-tree-select
 					placeholder="请选择分类"
-					v-model="value"
-					:data="data"
+					v-model="cateVal"
+					lazy
+					:load="loadCateNode"
 					check-strictly
 					:render-after-expand="false"
 					show-checkbox/>
@@ -54,45 +55,65 @@
 	</div>
 </template>
 <script setup>
+import { _getAllTagList, _createTag } from '@/api/tag.js'
+import { ElMessage } from 'element-plus'
 
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 const content = ref('')
 const title = ref('')
 const digest = ref('')
 const isAddTag = ref(false)
-const value4 = ref([])
+const tagVal = ref([])
 const tagName = ref('')
+const loading = ref(false)
 
+
+
+onMounted(()=>{
+	getAllTagList()
+})
+const tagList = ref([])
+const getAllTagList = () => {
+	loading.value = true
+	_getAllTagList().then(({result})=>{
+		tagList.value = result
+		tagList.value.forEach(item => {
+			item.value = item.id
+			item.label = item.name
+		})
+	}).finally(()=>{
+		loading.value = false
+	})
+}
+const confirmTag = () => {
+	if (tagName.value) {
+		let name = tagName.value
+		_createTag({name: tagName.value}).then((resp)=>{
+			if(resp.code === 200) {
+				// getAllTagList()
+				tagList.value.push({value: resp.result, label: name})
+				ElMessage({
+					type:'success',
+					message: '添加成功'
+				})
+			}
+		})
+		clear()
+	}else {
+		ElMessage({
+			type:'error',
+			message: '标签名称不能为空'
+		})
+	}
+}
 const clear = () => {
 	tagName.value = ''
 	isAddTag.value = false
 }
-const options = ref([
-	{
-		value: 'Option1',
-		label: 'Java',
-	},
-	{
-		value: 'Option2',
-		label: 'C++',
-	},
-	{
-		value: 'Option3',
-		label: 'JVM',
-	},
-	{
-		value: 'Option4',
-		label: 'SpringBoot',
-	},
-	{
-		value: 'Option5',
-		label: 'Java后端',
-	},
-])
 
-const value = ref()
+const cateVal = ref()
 
-const data = [
+const categoryList = [
   {
     value: '1',
     label: 'Java后端',
@@ -162,17 +183,16 @@ const data = [
     ],
   },
 ]
-const confirmTag = () => {
-	if (tagName.value) {
-		options.value.push({
-			label: tagName.value,
-			value: tagName.value,
-		})
-		clear()
+
+const loadCateNode = (node, resolve) => {
+	if(node.level === 0) {
+		return resolve([{ name: '默认分类'}])
 	}
+	if(node.level > 1) return resolve([])
+	setTimeout(()=> {
+		const data = []
+	}, 500)
 }
-
-
 
 </script>
 <style lang="scss" scoped>
