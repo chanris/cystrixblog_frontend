@@ -9,3 +9,19 @@ export function _categoryTree(params) {
 		data: params
 	})
 }
+
+export function _getCategoryByArticleId(params) {
+	return request({
+		url: '/home/category/getCategoryByArticleId',
+		method: 'post',
+		data: params
+	})
+}
+
+export function _updateCategoryRef(params) {
+	return request({
+		url: '/admin/category/updateCategoryRef',
+		method: 'post',
+		data: params
+	})
+}

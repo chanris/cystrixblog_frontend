@@ -16,3 +16,27 @@ export function _createTag(params) {
 		data: params
 	})
 }
+
+export function _getTagListByArticleId(params) {
+	return request({
+		url: '/home/tag/list',
+		method: 'post',
+		data: params
+	})
+}
+
+export function _deleteRef(params) {
+	return request({
+		url: '/admin/tag/deleteRef',
+		method: 'post',
+		data: params
+	})
+}
+
+export function _batchAddRef(params) {
+	return request({
+		url: '/admin/tag/batchAddRef',
+		method: 'post',
+		data: params
+	})
+}

@@ -2,13 +2,24 @@
 	<div class="container">
 		<div class="top">
 			<div>
-				<el-button type="success" v-if="isPublish">已发布</el-button>
-				<el-button type="warning" v-else >未发布</el-button>
+				<el-tag v-if="isPublish" type="success" effect="dark" round>已发布</el-tag>
+				<el-tag v-else type="warning" effect="dark" round>未发布</el-tag>
+			</div>
+			<div style="display: flex; align-items: center;">
+				<span style="width: 37px;">标题：</span>
+				<el-input
+					v-model.trim="article.title"
+					clearable
+					type="input"
+					placeholder="文章标签"
+					maxlength="30"
+					style="width: 260px;"
+				/>
 			</div>
 			<div style="display: flex; align-items: center;">
 				<span style="width: 37px;">摘要：</span>
 				<el-input
-					v-model="digest"
+					v-model.trim="article.digest"
 					:autosize="{ minRows: 1, maxRows: 4 }"
 					resize="none"
 					clearable
@@ -22,9 +33,12 @@
 				<span style="width: 45px;">标签：</span>
 				<el-select v-model="tagVal" 
 					v-loading="tagLoading"
+					@change="tagChange"
+					@remove-tag="tagRemove"
+					@blur="submitTagChange"
 					multiple collapse-tags collapse-tags-tooltip :max-collapse-tags="2"
 					placeholder="请选择标签" style="width: 240px">
-					<el-option v-for="item in tagList" :key="item.value" :label="item.label" :value="item.value" />
+					<el-option v-for="item in tagList" :key="item.value" :label="item.name" :value="item.id" />
 
 					<template #footer>
 						<el-button v-if="!isAddTag" text bg size="small" @click="isAddTag = true">
@@ -52,7 +66,7 @@
 			</div>
 			<div>
 				<el-button plain color="#626aef" @click="() => {isEdit = !isEdit; isPublish = false}">编辑</el-button>
-				<el-button type="primary">保存</el-button>
+				<el-button type="primary" @click="saveUpdate">保存</el-button>
 			</div>
 		</div>
 		<div class="content">
@@ -62,11 +76,13 @@
 	</div>
 </template>
 <script setup>
-import {ref, onMounted} from 'vue'
+import {ref, onMounted, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import {_getArticleDetail} from '@/api/article.js'
-import { _categoryTree } from '@/api/category.js'
-import { _getAllTagList, _createTag } from '@/api/tag.js'
+import { _getArticleDetail,  _updateArticleDetail} from '@/api/article.js'
+import { _categoryTree, _getCategoryByArticleId, _updateCategoryRef } from '@/api/category.js'
+import { _getAllTagList, _createTag, _getTagListByArticleId, 
+	_deleteRef, _batchAddRef } from '@/api/tag.js'
+import { ElMessage } from 'element-plus'
 
 const route = useRoute()
 const router = useRouter()
@@ -82,13 +98,14 @@ onMounted(()=>{
 })
 
 
-// 文章名称
+// 文章
 const isEdit =  ref(false)
 const isPublish = ref(true)
 const articleLoading = ref(false)
 const article = ref({
 	content: '',
-	digest: ''
+	digest: '',
+	title: ''
 })
 const getArticleDetail = (params) => {
 	articleLoading.value = true
@@ -98,11 +115,42 @@ const getArticleDetail = (params) => {
 		articleLoading.value = false
 	})
 }
+const updateArticleDetail = (params) => {
+	_updateArticleDetail(params).then((resp)=>{
+		if(resp.code === 200) {
+			ElMessage({
+				type: 'success',
+				message: '更新成功'
+			})
+			isPublish.value = true
+		}
+	})
+}
+const saveUpdate = () => {
+	updateArticleDetail(article.value)
+}
+watch(()=>article.value.title, (val, oldVal)=>{
+	if(val && oldVal !== '') {
+		isPublish.value = false
+	}
+})
+watch(()=>article.value.digest, (val, oldVal)=>{
+	if(val && oldVal !== '') {
+		isPublish.value = false
+	}
+})
 
 // 分类
 const cateLoading = ref(false)
-const cateVal = ref()
+const cateVal = ref('')
 const categoryList = ref([])
+const getCategoryByArticleId = (params) => {
+	_getCategoryByArticleId(params).then((resp)=>{
+		if(resp.code === 200) {
+			cateVal.value = '' + resp.result.id
+		}
+	})
+}
 const categoryTree = (params) => {
 	cateLoading.value = true
 	_categoryTree(params).then((resp)=>{
@@ -111,25 +159,55 @@ const categoryTree = (params) => {
 		}
 	}).finally(()=>{
 		cateLoading.value = false
+		getCategoryByArticleId({id: parseInt(route.params.id)})
 	})
 }
+const updateCategoryRef = (params) => {
+	_updateCategoryRef(params).then((resp)=>{
+		if(resp.code === 200) {
+			ElMessage({
+				type: 'success',
+				message: '更新成功'
+			})
+		}
+	})
+}
+watch(() => cateVal.value, (val, oldVal)=>{
+	if(val && oldVal !== '') {
+		updateCategoryRef({articleId: parseInt(route.params.id), categoryId: parseInt(val)})
+	}
+})
 
 // 标签
 const tagLoading = ref(false)
 const isAddTag = ref(false)
 const tagVal = ref([])
+const tagOriginVal = ref(new Set())
+const addTagIds = ref([])
 const tagName = ref('')
 const tagList = ref([])
 const getAllTagList = () => {
 	tagLoading.value = true
 	_getAllTagList().then(({result})=>{
 		tagList.value = result
-		tagList.value.forEach(item => {
-			item.value = item.id
-			item.label = item.name
-		})
+		getTagListByArticle({id: route.params.id})
 	}).finally(()=>{
 		tagLoading.value = false
+	})
+}
+const getTagListByArticle = (params) => {
+	_getTagListByArticleId(params).then((resp)=>{
+		if(resp.code === 200) {
+			for(let item of resp.result) {
+				tagVal.value.push(item.id)
+				tagOriginVal.value.add(item.id)
+			}
+		}else {
+			ElMessage({
+				type: 'error',
+				message: resp.msg
+			})
+		}
 	})
 }
 const confirmTag = () => {
@@ -137,7 +215,7 @@ const confirmTag = () => {
 		let name = tagName.value
 		_createTag({name: tagName.value}).then((resp)=>{
 			if(resp.code === 200) {
-				tagList.value.push({value: resp.result, label: name})
+				tagList.value.push({id: resp.result, name})
 				ElMessage({
 					type:'success',
 					message: '添加成功'
@@ -152,25 +230,76 @@ const confirmTag = () => {
 		})
 	}
 }
+
 const clear = () => {
 	tagName.value = ''
 	isAddTag.value = false
 }
+const tagChange = (tagIds)=>{
+	let ids = tagIds.filter(item => !tagOriginVal.value.has(item))
+	if(ids.length) {
+		addTagIds.value = ids
+	}
+}
+const submitTagChange = () => {
+	if(addTagIds.value.length) {
+		let params = []
+		addTagIds.value.forEach(id => {
+			params.push({tagId: id, articleId: parseInt(route.params.id)})
+		})
+		batchAddTagRef(params)
+	}
+}
+const tagRemove = (tagId) => {
+	deleteRef({articleId: parseInt(route.params.id), tagId})
+}
+const deleteRef = (params) => {
+	_deleteRef(params).then((resp)=>{
+		if(resp.code === 200) {
+			ElMessage({
+				type: 'success',
+				message: '删除成功'
+			})
+		}
+	})
+}
+const batchAddTagRef = (params) => {
+	_batchAddRef(params).then((resp)=>{
+		if(resp.code === 200) {
+			// 刷新文章标签 关联
+			getTagListByArticle({id: route.params.id})
+			ElMessage({
+				type: 'success',
+				message: '添加成功'
+			})
+		}
+	}).finally(()=>{
+		addTagIds.value = []
+	})
+}
+
 
 </script>
 <style lang="scss" scoped>
 .container {
 	width: 100%;
 	.top {
+		// position: fixed;
+		// z-index: 2;
+		// width: 1567px;
 		display: flex; 
 		justify-content: space-between;
-		align-items: flex-start; 
+		align-items: center;
 		padding: 10px 10px;
 		margin-bottom: 10px;
 		background: #fff;
 	}
 	.content {
+		// position: relative;
+		// bottom: -100px;
+		// margin-top: 20px;
 		background-color: #fff;
+		
 	}
 }
 </style>

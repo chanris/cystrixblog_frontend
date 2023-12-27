@@ -40,4 +40,12 @@ export function _removeArticle(params) {
 		data: params
 	})
 }
+export function _updateArticleDetail(params) {
+	return request({
+		url: '/admin/article/update',
+		method: 'post',
+		data: params
+	})
+}
+
 
