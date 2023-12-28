@@ -16,6 +16,14 @@ export function getArticleDetail(params) {
 	})
 }
 
+export function _getArticleListWithoutContent(params) { 
+	return request({
+		url: '/home/article/listArticleDigestInfo',
+		method: 'post',
+		data: params
+	})
+}
+
 /********************** admin api ********************* */
 export function _getArticleList(params) {
 	return request({

@@ -39,15 +39,16 @@ const append = (data) => {
 		inputPattern: /.+/,
 		inputErrorMessage: '名称不能为空',
 	}).then(({ value }) => {
-		const newChild = {id: id++, label: value, children: []}
+		const newChild = {label: value, children: []}
 		if (!data.children) {
 			data.children = []
 		}
 		let params = {name: value, pid: data.id}
-		_addCategory(params).then(()=>{
+		_addCategory(params).then(({result})=>{
 			// 现在能触发这个函数，那么入参必为正常返回的数据 即 resp === {code: 200, msg: 'xxx', [result: {}]}
-			cateTree.value = [...cateTree.value]
+			newChild.id = result
 			data.children.push(newChild)
+			cateTree.value = [...cateTree.value]
 			ElMessage({
 				type: 'success',
 				message: '添加成功'

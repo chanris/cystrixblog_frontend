@@ -11,46 +11,30 @@
 			<div class="content-box">
 				<el-row>
 					<el-col :span="18" class="post-wrapper">
-						<el-card class="post-item">
+						<el-card class="post-item" v-for="article in articleList" :key="article.id">
 							<el-image class="post-cover" @click="goDetail"></el-image>
 							<div class="post-item-right">
 								<div class="recent-post-info">
-									<div class="article-title" @click="goDetail">JWT的介绍与使用</div>
+									<div class="article-title" @click="goDetail">{{ article.title}}</div>
 									<div class="article-meta-wrap">
 										<Grid style="height: 13px; width: 13px; padding-right: 2px;"></Grid>发表于 <span
-											style="padding-left: 2px;">2020-03-19</span> <span
+											style="padding-left: 2px;">{{article.createTime}}</span> <span
 											style="padding: 0 6px;">|</span>
 										<Present style="height: 13px; width: 13px;"></Present> <span
-											style="padding-left: 2px;">jwt</span>
+											style="padding-left: 2px;">{{article.categoryName}}</span>
 									</div>
 									<div class="content">
-										JWT(JSON WEB TOKEN)的介绍与使用1. 什么是JWT JSON Web
-										Token(JWT)，是为了在网络应用环境间传递声明而执行的一种基于JSON的开放标准。该token被设计为紧凑而安全,特别适用于分
-									</div>
-								</div>
-							</div>
-						</el-card>
-						<el-card class="post-item">
-							<el-image class="post-cover" @click="goDetail"></el-image>
-							<div class="post-item-right">
-								<div class="recent-post-info">
-									<div class="article-title" @click="goDetail">JWT的介绍与使用</div>
-									<div class="article-meta-wrap">
-										<Grid style="height: 13px; width: 13px; padding-right: 2px;"></Grid>发表于 <span
-											style="padding-left: 2px;">2020-03-19</span> <span
-											style="padding: 0 6px;">|</span>
-										<Present style="height: 13px; width: 13px;"></Present> <span
-											style="padding-left: 2px;">jwt</span>
-									</div>
-									<div class="content">
-										JWT(JSON WEB TOKEN)的介绍与使用1. 什么是JWT JSON Web
-										Token(JWT)，是为了在网络应用环境间传递声明而执行的一种基于JSON的开放标准。该token被设计为紧凑而安全,特别适用于分
+										{{ article.digest }}
 									</div>
 								</div>
 							</div>
 						</el-card>
 						<div class="page-wrapper">
-							<el-pagination :hide-on-single-page="true" background layout="prev, pager, next" :total="50" />
+							<el-pagination :hide-on-single-page="true"
+							background layout="prev, pager, next" 
+							v-model:page-size="pageInfo.pageSize"
+							v-model:current-page="pageInfo.pageNum"
+							:total="pageInfo.total" />
 						</div>
 					</el-col>
 					<el-col :span="6">
@@ -84,7 +68,7 @@
 </template>
 
 <script setup>
-import { onMounted, ref, onBeforeUnmount } from 'vue'
+import { onMounted, ref, onBeforeUnmount, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import NavigateBar from '@/components/layout/NavigateBar.vue'
 import UserInfo from '@/components/UserInfo.vue'
@@ -95,10 +79,12 @@ import Tag from '@/components/TagCard.vue'
 import Archive from '@/components/ArchiveCard.vue'
 import WebInfo from '@/components/WebInfo.vue'
 import Footer from '@/components/layout/footer.vue'
+import { _randomMottos } from '@/api/site.js'
+import { _getArticleListWithoutContent } from '@/api/article.js'
 
 //跳转到正文部分
 const scrollToContent = function () {
-	const contentBoxHeight = document.querySelector('.content-box').offsetTop;
+	const contentBoxHeight = document.querySelector('.content-box').offsetTop
 	window.scrollTo({
 		top: contentBoxHeight + window.innerHeight,
 		behavior: 'smooth'
@@ -106,8 +92,19 @@ const scrollToContent = function () {
 }
 
 // 座右铭显示
+onMounted(()=>{
+	getMottoList(5)
+})
+const getMottoList = (num) => {
+	_randomMottos(num).then(({result})=>{
+		mottoList.value = result
+		if(mottoList.value.length) {
+			loopDisplay()
+		}
+	})
+}
 const mottoList = ref([])
-const motto = ref("Don't go gentle into that good night")
+const motto = ref('')
 const mottoDisplay = ref('')
 const isBlink = ref(false) // 控制光标闪烁
 // const mottoDisplayTimer = setInterval(()=>{
@@ -132,9 +129,11 @@ const isBlink = ref(false) // 控制光标闪烁
 // 		console.log(err)
 // 	})
 // }
+let count = 0
 const mottoDisplayHandler = function () {
 	return new Promise((resolve) => {
 		// motto 长度不能为0！
+		motto.value = mottoList.value[count++ % mottoList.value.length].content
 		let length = motto.value.length + 1
 		let index = 1
 		let timer = setInterval(() => {
@@ -179,15 +178,38 @@ const loopDisplay = function () {
 		})
 	})
 }
-loopDisplay()
+
+// 文章列表
+onMounted(()=>{
+	getArticleList(pageInfo.value)
+})
+const articleList = ref([])
+const pageInfo = ref({
+	pageNum: 1,
+	pageSize: 5,
+	total: 0
+})
+const getArticleList = (params) => {
+	_getArticleListWithoutContent(params).then(({result})=>{
+		articleList.value = result.list
+		pageInfo.value.pageNum = result.pageNum
+		pageInfo.value.pageSize = result.pageSize
+		pageInfo.value.total = result.total
+	})
+} 
+watch([()=>pageInfo.value.pageNum, ()=>pageInfo.value.pageSize], 
+	([pageNum, pageSize], [oldPageNum, oldPageSize]) => {
+		// todo 23/12/29 为什么每次监听 pageNum === oldPageNum ?
+		getArticleList(pageInfo.value)
+})
+
+
 
 // 去文章详情页
 const router = useRouter()
 const goDetail = () => {
 	router.push({ name: 'articleDetail' })
 }
-
-
 
 onBeforeUnmount(() => {
 	// mottoDisplayTimer.clear()
@@ -353,6 +375,7 @@ onBeforeUnmount(() => {
 					display: flex;
 					justify-content: center;
 					margin-top: 20px;
+					margin-bottom: 20px;
 				}
 			}
 

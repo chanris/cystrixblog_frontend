@@ -67,7 +67,7 @@
 </template>
 <script setup>
 import { ElMessage } from 'element-plus'
-import { ref, onMounted, watch, computed} from 'vue'
+import { ref, onMounted, watch} from 'vue'
 import { useRouter } from 'vue-router'
 import { _getArticleList, _removeArticle } from '@/api/article.js'
 import { parseTime } from '@/utils/format.js'
@@ -126,9 +126,13 @@ const indexCoordinate = ref({
 	pageSize: 10,
 })
 
-watch(pageInfo.value, (val, oldVal) => {
-	getArticleList({...searchData.value, ...pageInfo.value})
+watch([()=>pageInfo.value.pageNum, ()=>pageInfo.value.pageSize], 
+	([pageNum, pageSize], [oldPageNum, oldPageSize]) => {
+		// todo 23/12/29 为什么每次监听 pageNum === oldPageNum ?
+		// console.log(`admin pageInfo watch is triggered. val:`, pageNum, 'oldVal', pageNum)
+		getArticleList({...searchData.value, ...pageInfo.value})
 })
+
 
 const shortcuts = [
   {
