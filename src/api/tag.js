@@ -48,3 +48,19 @@ export function _getTagListWithPage(params) {
 		data: params
 	})
 }
+
+export function _deleteTag(params) {
+	return request({
+		url: '/admin/tag/delete',
+		method: 'post',
+		data: params
+	})
+}
+
+export function _updateTag(params) {
+	return request({
+		url: '/admin/tag/update',
+		method: 'post',
+		data: params
+	})
+}

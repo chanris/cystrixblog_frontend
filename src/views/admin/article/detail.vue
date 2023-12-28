@@ -24,7 +24,7 @@
 					resize="none"
 					clearable
 					type="textarea"
-					placeholder="文章摘要（限量两百字）"
+					placeholder="文章摘要（限两百字）"
 					maxlength="200"
 					style="width: 300px;"
 				/>
@@ -45,7 +45,7 @@
 							新建标签
 						</el-button>
 						<template v-else>
-							<el-input style="margin-bottom: 10px;" v-model="tagName" class="option-input"
+							<el-input style="margin-bottom: 10px;" v-model="tagName"
 								placeholder="请输入标签名称" size="small" />
 							<el-button type="primary" size="small" @click="confirmTag">添加</el-button>
 							<el-button size="small" @click="clear">取消</el-button>
@@ -123,6 +123,7 @@ const updateArticleDetail = (params) => {
 				message: '更新成功'
 			})
 			isPublish.value = true
+			isEdit.value = false
 		}
 	})
 }
@@ -214,13 +215,11 @@ const confirmTag = () => {
 	if (tagName.value) {
 		let name = tagName.value
 		_createTag({name: tagName.value}).then((resp)=>{
-			if(resp.code === 200) {
-				tagList.value.push({id: resp.result, name})
-				ElMessage({
-					type:'success',
-					message: '添加成功'
-				})
-			}
+			tagList.value.push({id: resp.result, name})
+			ElMessage({
+				type:'success',
+				message: '添加成功'
+			})
 		})
 		clear()
 	}else {

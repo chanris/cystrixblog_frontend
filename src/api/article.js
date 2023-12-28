@@ -48,4 +48,12 @@ export function _updateArticleDetail(params) {
 	})
 }
 
+export function _createArticle(params) {
+	return request({
+		url: '/admin/article/add',
+		method: 'post',
+		data: params
+	})
+} 
+
 
