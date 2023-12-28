@@ -40,3 +40,11 @@ export function _batchAddRef(params) {
 		data: params
 	})
 }
+
+export function _getTagListWithPage(params) {
+	return request({
+		url: '/home/tag/page',
+		method: 'post',
+		data: params
+	})
+}

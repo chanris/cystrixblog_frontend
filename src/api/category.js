@@ -25,3 +25,19 @@ export function _updateCategoryRef(params) {
 		data: params
 	})
 }
+
+export function _addCategory(params) {
+	return request({
+		url: '/admin/category/add',
+		method: 'post',
+		data: params
+	})
+}
+
+export function _removeCategory(params) {
+	return request({
+		url: '/admin/category/delete',
+		method: 'post',
+		data: params
+	})
+}

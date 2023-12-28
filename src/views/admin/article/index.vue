@@ -31,16 +31,17 @@
 				<el-table-column fixed prop="index" label="序号" min-width="80" >
 					<template #default="scope">
 						<div>
-							{{ (pageInfo.pageNum - 1) * pageInfo.pageSize + scope.$index + 1}}
+							{{ (indexCoordinate.pageNum - 1) * indexCoordinate.pageSize + scope.$index + 1}}
 						</div>
 					</template>
 				</el-table-column>
 				<el-table-column prop="title" label="文章名称" min-width="120" />
-				<el-table-column prop="digest" label="摘要" min-width="200" />
+				<!-- <el-table-column prop="digest" label="摘要" min-width="200" /> -->
 				<el-table-column prop="wordNum" label="文章字数" min-width="120" />
 				<el-table-column prop="viewCount" label="浏览量" min-width="100" />
 				<el-table-column prop="likeCount" label="点赞数" min-width="100" />
 				<el-table-column prop="createTime" label="发布日期" min-width="100" />
+				<el-table-column prop="updateTime" label="更新日期" min-width="100" />
 				<!-- <el-table-column prop="address" label="热度排名" min-width="100" /> -->
 				<el-table-column fixed="right" label="操作" min-width="60">
 					<template #default="scope">
@@ -49,8 +50,7 @@
 						@confirm="delConfirm(scope.row)" 
 						cancel-button-text="取消" 
 						confirm-button-text="删除"
-						confirm-button-type="danger"
-						>
+						confirm-button-type="danger">
 							<template #reference>
 								<el-button link type="danger" size="small">删除</el-button>
 							</template>
@@ -121,6 +121,10 @@ const pageInfo = ref({
 	pageSize: 10,
 	total: 0
 })
+const indexCoordinate = ref({
+	pageNum: 1,
+	pageSize: 10,
+})
 
 watch(pageInfo.value, (val, oldVal) => {
 	getArticleList({...searchData.value, ...pageInfo.value})
@@ -169,6 +173,8 @@ const getArticleList = (params) => {
 		pageInfo.value.total = result.total
 		pageInfo.value.pageNum = result.pageNum
 		pageInfo.value.pageSize = result.pageSize
+		indexCoordinate.value.pageNum = result.pageNum
+		indexCoordinate.value.pageSize = result.pageSize
 	}).finally(()=>{
 		loading.value = false
 	})

@@ -1,13 +1,16 @@
 import axios from 'axios'
 import store from '@/store'
+import router from '@/router'
 
 import {ElMessage} from 'element-plus'
 var errorMsg = null // 控制只显示一个错误提示
+var errorCode = [401, 403]
 // 创建axios 实例
 const service = axios.create({
 	baseURL: import.meta.env.VITE_BASE_URL,
 	timeout: 35000 // 请求超时时间
 })
+
 
 // request拦截器
 service.interceptors.request.use(
@@ -30,7 +33,41 @@ service.interceptors.response.use(
 	// 响应码 200
 	response => {
 		// 对响应数据做点什么
-		return response.data
+		const config = response.config
+		if(config.responseType === 'blob') {
+			if(response.data.size < 100 && response.data.type === 'application/json') {
+				return Promise.reject({desc: '文件加载错误'})
+			}else {
+				return response
+			}
+		}else {
+			// token续命
+			const res = response.data
+			if(res.refreshToken) {
+				const user = store.getters.user
+				user.token = res.refreshToken
+				store.commit('SET_USER', user)
+				store.commit('SET_TOKEN', res.refreshToken)
+			}
+			if (response.status === 405 || errorCode.indexOf(res.code) !== -1) {
+				router.push({name: 'login'})
+				return
+			}
+			// 当返回值不为200时，不会触发response处理函数，而是会走error
+			if (res.code !== 200) {
+				!errorMsg && (errorMsg = ElMessage({
+				  message: res.msg,
+				  type: 'error',
+				  duration: 5 * 1000,
+				  onClose: () => {
+					errorMsg = null
+				  }
+				}))
+				return Promise.reject(res)
+			} else {
+				return res
+			}
+		}
 	},
 	error => {
 		!errorMsg && ( errorMsg = ElMessage({
