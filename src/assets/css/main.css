@@ -1,1 +1,25 @@
 @import url('./font_20231912/iconfont.css');
+
+
+
+/* 滚动条样式 */
+::-webkit-scrollbar {
+	width: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+	background-color: #409eff;
+}
+
+@keyframes bgcGradient {
+	0% {
+		background-color: #fff;
+		
+	}
+	50% {
+		background-color: #80c8f8;
+	}
+	100% {
+		background-color: #49b1f5;
+	}
+}

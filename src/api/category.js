@@ -1,6 +1,12 @@
 import request from '@/api/request.js'
 
-
+export function _categoryTree2(params) {
+	return request({
+		url: '/home/category/tree',
+		method: 'post',
+		data: params
+	})
+}
 /********************** admin api ********************* */
 export function _categoryTree(params) {
 	return request({

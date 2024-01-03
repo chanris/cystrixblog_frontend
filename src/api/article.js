@@ -62,6 +62,13 @@ export function _createArticle(params) {
 		method: 'post',
 		data: params
 	})
-} 
+}
 
 
+export function _likeArticle(params) {
+	return request({
+		url: '/home/article/likeArticle',
+		method: 'post',
+		data: params
+	})
+}

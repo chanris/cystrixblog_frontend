@@ -154,10 +154,8 @@ const getCategoryByArticleId = (params) => {
 }
 const categoryTree = (params) => {
 	cateLoading.value = true
-	_categoryTree(params).then((resp)=>{
-		if(resp.code === 200) {
-			categoryList.value.push(resp.result) 
-		}
+	_categoryTree(params).then(({result})=>{
+		categoryList.value.push(result) 
 	}).finally(()=>{
 		cateLoading.value = false
 		getCategoryByArticleId({id: parseInt(route.params.id)})
@@ -180,6 +178,13 @@ watch(() => cateVal.value, (val, oldVal)=>{
 })
 
 // 标签
+function getRandomHexColor() {
+  // 生成一个随机的 16 进制颜色值
+  const randomColor = Math.floor(Math.random()*16777215).toString(16);
+  
+  // 确保颜色值总是 6 位，不足的在前面补 0
+  return '#' + '0'.repeat(6 - randomColor.length) + randomColor;
+}
 const tagLoading = ref(false)
 const isAddTag = ref(false)
 const tagVal = ref([])

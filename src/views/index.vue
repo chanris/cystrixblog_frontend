@@ -12,10 +12,13 @@
 				<el-row>
 					<el-col :span="18" class="post-wrapper">
 						<el-card class="post-item" v-for="article in articleList" :key="article.id">
-							<el-image class="post-cover" @click="goDetail"></el-image>
+							<el-image class="post-cover"
+							fit="cover"
+							:src="`http://47.109.110.189/download/cover/${article.coverImg}`" 
+							@click="goDetail(article)"></el-image>
 							<div class="post-item-right">
 								<div class="recent-post-info">
-									<div class="article-title" @click="goDetail">{{ article.title}}</div>
+									<div class="article-title" @click="goDetail(article)">{{ article.title}}</div>
 									<div class="article-meta-wrap">
 										<Grid style="height: 13px; width: 13px; padding-right: 2px;"></Grid>发表于 <span
 											style="padding-left: 2px;">{{article.createTime}}</span> <span
@@ -68,7 +71,7 @@
 </template>
 
 <script setup>
-import { onMounted, ref, onBeforeUnmount, watch } from 'vue'
+import { onMounted, ref, onBeforeUnmount, watch, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import NavigateBar from '@/components/layout/NavigateBar.vue'
 import UserInfo from '@/components/UserInfo.vue'
@@ -203,12 +206,15 @@ watch([()=>pageInfo.value.pageNum, ()=>pageInfo.value.pageSize],
 		getArticleList(pageInfo.value)
 })
 
+//
 
 
 // 去文章详情页
 const router = useRouter()
-const goDetail = () => {
-	router.push({ name: 'articleDetail' })
+const goDetail = (article) => {
+	router.push({ name: 'articleDetail', params: {
+		id: article.id
+	} })
 }
 
 onBeforeUnmount(() => {
@@ -324,6 +330,8 @@ onBeforeUnmount(() => {
 					flex-direction: row;
 
 					.post-cover {
+						// background-position: center;
+						// background-size: cover;
 						width: 395px;
 						height: 280px;
 						z-index: 2;

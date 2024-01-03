@@ -38,23 +38,38 @@
 				<el-table-column prop="title" label="文章名称" min-width="120" />
 				<!-- <el-table-column prop="digest" label="摘要" min-width="200" /> -->
 				<el-table-column prop="wordNum" label="文章字数" min-width="120" />
-				<el-table-column prop="viewCount" label="浏览量" min-width="100" />
-				<el-table-column prop="likeCount" label="点赞数" min-width="100" />
+				<el-table-column prop="viewCount" label="浏览量" min-width="60" />
+				<el-table-column prop="likeCount" label="点赞数" min-width="60" />
 				<el-table-column prop="createTime" label="发布日期" min-width="100" />
 				<el-table-column prop="updateTime" label="更新日期" min-width="100" />
 				<!-- <el-table-column prop="address" label="热度排名" min-width="100" /> -->
-				<el-table-column fixed="right" label="操作" min-width="60">
+				<el-table-column fixed="right" label="操作" min-width="100">
 					<template #default="scope">
-						<el-button link type="primary" size="small" @click="goArticleDetail(scope.row)">详情</el-button>
-						<el-popconfirm title="确定要删除该文章？" 
-						@confirm="delConfirm(scope.row)" 
-						cancel-button-text="取消" 
-						confirm-button-text="删除"
-						confirm-button-type="danger">
-							<template #reference>
-								<el-button link type="danger" size="small">删除</el-button>
-							</template>
-						</el-popconfirm>
+						<div style="display: flex;">
+							<el-button link type="primary" size="small" @click="goArticleDetail(scope.row)">详情</el-button>
+							<el-popconfirm title="确定要删除该文章？" 
+							@confirm="delConfirm(scope.row)" 
+							cancel-button-text="取消" 
+							confirm-button-text="删除"
+							confirm-button-type="danger">
+								<template #reference>
+									<el-button link type="danger" size="small">删除</el-button>
+								</template>
+							</el-popconfirm>
+							<el-upload
+								v-model:file-list="fileList"
+								:headers="{authorization: store.getters.token || ''}"
+								:data="{id: scope.row.id}"
+								:show-file-list="false"
+								accept=".jpg,.jpeg.,.png,.PNG,.JPG,.JPEG"
+								:before-upload="beforeUploadHandle"
+								:on-success="uploadSuccssHandle"
+								:on-error="uploadErrorHandle"
+								action="http://47.109.110.189:8080/admin/article/upload/img">
+								<el-button link type="primary" size="small">封面</el-button>
+							</el-upload>
+						</div>
+						
 					</template>
 				</el-table-column>
 			</el-table>
@@ -69,11 +84,42 @@
 import { ElMessage } from 'element-plus'
 import { ref, onMounted, watch} from 'vue'
 import { useRouter } from 'vue-router'
+import { useStore } from 'vuex'
 import { _getArticleList, _removeArticle } from '@/api/article.js'
 import { parseTime } from '@/utils/format.js'
 
-const loading = ref(false)
+const fileList = ref([])
+const store = useStore()
+const beforeUploadHandle = (file) => {
+	if(!file) return false
+	let suffix = file.name.split('.').pop()
+	if(!suffix) return false
+	if(file.size > 1024 * 1024 * 10)  {
+		ElMessage({
+			type: 'error',
+			message: '上传文件大小限制10MB'
+		})
+		return false
+	}
+	return true
+}
+const uploadSuccssHandle = (response) => {
+	ElMessage({
+		type: 'success',
+		message: '上传成功'
+	})
+	console.log(response)
+}
+const uploadErrorHandle = (err) => {
+	ElMessage({
+		type: 'error',
+		message: '上传失败'
+	})
+	console.log(err)
+}
 
+// 文章列表
+const loading = ref(false)
 const removeArticle = (params) => {
 	_removeArticle(params).then((res)=>{
 		if(res.code === 200) {
@@ -89,14 +135,12 @@ const removeArticle = (params) => {
 const delConfirm = (item) => {
 	removeArticle({id: item.id})
 }
-
 const searchData =  ref({
 	title: '',
 	timeRange: '',
 	startTime: '',
 	endTime: ''
 })
-
 watch(searchData.value, (val, oldVal)=>{
 	if(val.timeRange) {
 		val.startTime = parseTime(val.timeRange[0]) 
@@ -106,7 +150,6 @@ watch(searchData.value, (val, oldVal)=>{
 		val.endTime = ''
 	}
 })
-
 const doSearch = () => {
 	getArticleList({...searchData.value})
 }
@@ -115,7 +158,6 @@ const resetSearch = () => {
 	searchData.value.timeRange = ''
 	getArticleList({})
 }
-
 const pageInfo = ref({
 	pageNum: 1,
 	pageSize: 10,
@@ -125,15 +167,12 @@ const indexCoordinate = ref({
 	pageNum: 1,
 	pageSize: 10,
 })
-
 watch([()=>pageInfo.value.pageNum, ()=>pageInfo.value.pageSize], 
 	([pageNum, pageSize], [oldPageNum, oldPageSize]) => {
 		// todo 23/12/29 为什么每次监听 pageNum === oldPageNum ?
 		// console.log(`admin pageInfo watch is triggered. val:`, pageNum, 'oldVal', pageNum)
 		getArticleList({...searchData.value, ...pageInfo.value})
 })
-
-
 const shortcuts = [
   {
     text: '最近一周',

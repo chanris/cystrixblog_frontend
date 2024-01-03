@@ -154,10 +154,8 @@ onMounted(()=>{
 })
 const categoryTree = (params) => {
 	cateLoading.value = true
-	_categoryTree(params).then((resp)=>{
-		if(resp.code === 200) {
-			categoryList.value.push(resp.result) 
-		}
+	_categoryTree(params).then(({result})=>{
+		categoryList.value.push(result) 
 	}).finally(()=>{
 		cateLoading.value = false
 	})

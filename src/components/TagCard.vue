@@ -4,29 +4,49 @@
 			<el-image :src="tagIcon" class="card-icon"></el-image>标签
 		</div>
 		<div class="tag-cloud">
-			<span class="tag-item">Hexo</span>
-			<span class="tag-item">NoSql</span>
-			<span class="tag-item">Redis</span>
-			<span class="tag-item">iconfonts</span>
-			<span class="tag-item">css</span>
-			<span class="tag-item">内存</span>
-			<span class="tag-item">数据类型</span>
-			<span class="tag-item">补码</span>
+			<span class="tag-item" v-for="tag in tagList" :key="tag.id" :style="{color: tag.color}">{{tag.name}}</span>
 		</div>
 	</div>
 </template>
 <script setup>
 import tagIcon from '@/assets/svg/tag.svg'
+import {_getAllTagList} from '@/api/tag.js'
+import { onMounted, ref } from 'vue'
+
+onMounted(() => {
+	getAllTags()
+})
+
+const tagList = ref([])
+const getAllTags = () => {
+	_getAllTagList().then(({result})=>{
+		tagList.value = result
+	})
+}
 </script>
 <style lang="scss" scoped>
+@keyframes pluse {
+	0% {
+		transform: scale(1);
+	}
+
+	100% {
+		transform: scale(1.2);
+	}
+}
 .tag-wrapper {
 	.tag-cloud {
 		width: 243px;
 
 		.tag-item {
+			display: inline-block; // 行内元素无动画
 			font-size: 15.4px;
 			height: 30.8px;
 			padding: 0 2px;
+			&:hover {
+				animation: pluse 0.5s 1 forwards; //关键帧  动画时间 动画次数  停留在最后一帧
+				cursor: pointer;
+			}
 		}
 	}
 }

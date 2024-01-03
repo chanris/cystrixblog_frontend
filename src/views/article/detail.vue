@@ -3,9 +3,9 @@
 		<NavigateBar></NavigateBar>
 		<div class="title-box">
 			<div class="wrap">
-				<div class="title">JWT的介绍与使用</div>
-				<div class="publish">发表于 2023-03-19 <span>|</span> 更新于 2022-03-19 <span>|</span> JWT</div>
-				<div class="info">字数统计：2.2k <span>|</span> 阅读时长：8分钟 <span>|</span> 阅读量：16 </div>
+				<div class="title">{{article.title}}</div>
+				<div class="publish">发表于 {{article.createTime}} <span>|</span> 更新于 {{article.updateTime}} <span>|</span> {{article.categoryName}}</div>
+				<div class="info">字数统计：{{article.wordNum}} <span>|</span> 阅读时长：{{ readTime }}分钟 <span>|</span> 阅读量：{{article.viewCount}} </div>
 			</div>
 		</div>
 		<div class="main">
@@ -13,13 +13,18 @@
 				<el-row>
 					<el-col :span="18" class="post-wrapper">
 						<el-card class="post-content" v-loading="loading">
-							<v-md-preview :text="text" ></v-md-preview>
+							<v-md-preview :text="article.content" ></v-md-preview>
 							<div class="post-info">
 								<div class="author"> 
 									<div>
-										<span class="head">文章作者：</span> <a href="#">Cystrix</a>
+										<span class="head">文章作者：</span> <a href="/">Cystrix</a>
 									</div>
-									<div>
+									<div style="display: flex;">
+										<span>点赞</span>
+										<div style="display: flex; margin-right: 20px; cursor: pointer;" @click="doLikeOnce(article.id)" >
+											<el-image v-if="isLike" style="width: 21px; height: 21px;" :src="heartIcon" ></el-image>
+											<el-image v-else style="width: 21px; height: 21px;" :src="grayHeartIcon" ></el-image>
+										</div>
 										<el-image style="width: 21px; height: 21px;" :src="copyrightIcon"></el-image>
 									</div>
 								</div>
@@ -41,7 +46,7 @@
 					</el-col>
 				</el-row>
 			</div>
-			<Footer></Footer>
+			<Footer v-model:coverImg="coverImg"></Footer>
 		</div>
 	</div>
 </template>
@@ -52,19 +57,76 @@ import Notice from '@/components/Notice.vue'
 import LatestArticle from '@/components/LatestArticle.vue'
 import Footer from '@/components/layout/footer.vue'
 import copyrightIcon from '@/assets/svg/copyright.svg'
-import { ref, onMounted } from 'vue'
-import { getArticleDetail } from '@/api/article.js'
+import grayHeartIcon from '@/assets/svg/grayHeart.svg'
+import heartIcon from '@/assets/svg/heart.svg' 
+import { ref, onMounted, computed } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+import { getArticleDetail, _likeArticle } from '@/api/article.js'
+import { ElMessage } from 'element-plus'
 
+
+const route = useRoute()
+const router = useRouter()
+const loading = ref(false)
+const article = ref({
+	id: '',
+	title: '',
+	content: '',
+	createTime: '',
+	updateTime: '',
+	wordNum: '',
+	viewCount: '',
+	categoryName: '',
+	categoryId: '',
+	coverImg: ''
+})
+const coverImg = ref('')
 onMounted(()=>{
-	getArticleDetail({id: 39}).then(({result})=>{
-		text.value = result.content
-	}).finally(()=>{
-		loading.value = false
-	})
+	if(route.params.id) {
+		let id = route.params.id
+		loading.value = true
+		getArticleDetail({id}).then(({result})=>{
+			article.value = result
+			let el = document.querySelector(".title-box")
+			if(article.value.coverImg) {
+				coverImg.value = `url('http://47.109.110.189/download/cover/${article.value.coverImg}')`
+				el.style.backgroundImage = coverImg.value
+			}
+		}).finally(()=>{
+			loading.value = false
+		})
+	}else {
+		router.push({name: 'index'})
+	}
+	
 })
 
-const text = ref('')
-const loading = ref(true)
+const readTime = computed(()=>{
+	return (article.value.wordNum && parseInt(article.value.wordNum / 200)) || 0
+}) 
+
+// 点赞
+const isLike = ref(false)
+const likeArticle = (params) => {
+	_likeArticle(params).then((resp)=>{
+		isLike.value = true
+		ElMessage({
+			type: 'success',
+			message: '点赞成功'
+		})
+	})
+}
+
+const doLikeOnce = (() => {
+	let once = false
+	return (id) => {
+		if(!once) {
+			likeArticle({id})
+			once = true
+		}
+	}	
+})()
+
 
 </script>
 <style lang="scss" scoped>
@@ -77,23 +139,14 @@ a {
 .wrapper {
 	color: #4C4948;
 	.title-box {
-		position: relative;
 		height: 400px;
 		width: 100%;
 		color: #fff;
-		&::before {
-			content: '';
-			position: absolute;
-			top: 0;
-			left: 0;
-			width: 100%;
-			height: 100%;
-			background-image: url('@/assets/img/post_bg.jpg');
-			filter: brightness(80%);
-			background-position: center;
-			background-size: cover;
-			z-index: -1;
-		}
+		// background-image: url('@/assets/img/post_bg.jpg');
+		background-color: #4C4948;
+		filter: brightness(95%);
+		background-position: center;
+		background-size: cover;
 		.wrap {
 			display: flex;
 			flex-direction: column;

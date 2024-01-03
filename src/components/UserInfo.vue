@@ -2,27 +2,31 @@
 	<div class="user-wrapper">
 		<el-avatar shape="circle" :size="110" :src="defaultAvatar" fit="fill" @mouseover="rotateClockwise"
 			@mouseleave="rotateCounterclockwise" />
-		<div class="user-name">Cystrix</div>
+		<div class="user-name">{{user.nickname}}</div>
 		<div class="user-statistics">
 			<div class="item">
 				<div class="item-one">文章</div>
-				<div class="item-two">6</div>
+				<div class="item-two">{{ user.articleNum }}</div>
 			</div>
 			<div class="item">
 				<div class="item-one">标签</div>
-				<div class="item-two">11</div>
+				<div class="item-two">{{ user.tagNum }}</div>
 			</div>
 			<div class="item">
 				<div class="item-one">分类</div>
-				<div class="item-two">6</div>
+				<div class="item-two">{{ user.categoryNum }}</div>
 			</div>
 		</div>
-		<div class="user-followme"> <el-image :src="githubWhiteIcon"
+		<div class="user-followme" @click="goGithub"> <el-image :src="githubWhiteIcon"
 				style="height: 20px; width: 20px; margin-right: 5px;" /> Follow Me</div>
 		<div style="margin-top: 20px; display: flex; justify-content: center; align-items: center;">
-			<el-image :src="githubIcon" style="height: 20px; width: 20px;"></el-image>
+			<a href="https://github.com/chanris">
+				<el-image :src="githubIcon" style="height: 20px; width: 20px;"></el-image>
+			</a>
 			<div style="width: 20px;"></div>
-			<el-image :src="emailIcon" style="height: 20px; width: 20px; "></el-image>
+			<a :href="`mailto:${user.email}`">
+				<el-image :src="emailIcon" style="height: 20px; width: 20px; "></el-image>
+			</a>
 		</div>
 	</div>
 </template>
@@ -31,6 +35,22 @@ import defaultAvatar from '@/assets/img/default_avatar.jpg'
 import githubWhiteIcon from '@/assets/svg/github-white.svg'
 import githubIcon from '@/assets/svg/github.svg'
 import emailIcon from '@/assets/svg/email.svg'
+import { onMounted, ref } from 'vue'
+import { _getUserInfo } from '@/api/user.js'
+
+const user = ref({
+	nickname: '',
+	email: '',
+	articleNum: '',
+	tagNum: '',
+	categoryNum: ''
+})
+onMounted(()=>{
+	_getUserInfo().then(({result})=>{
+		user.value = result
+	})
+})
+
 
 // 用户头像旋转
 const rotateClockwise = () => {
@@ -41,6 +61,10 @@ const rotateClockwise = () => {
 const rotateCounterclockwise = () => {
 	const avatar = document.querySelector('.el-avatar');
 	avatar.style.transform = 'rotate(-360deg)';
+}
+
+const goGithub = () => {
+	window.location.href = 'https://github.com/chanris'
 }
 </script>
 <style lang="scss" scoped>

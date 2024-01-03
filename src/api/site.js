@@ -7,3 +7,10 @@ export function _randomMottos(params) {
 		method: 'get',
 	})
 }
+
+export function _getSiteInfo() {
+	return request({
+		url: 'home/siteInfo',
+		method: 'get'
+	})
+}
