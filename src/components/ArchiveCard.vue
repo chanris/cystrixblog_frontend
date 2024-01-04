@@ -4,7 +4,7 @@
 			<el-image :src="archiveIcon" class="card-icon"></el-image>归档
 		</div>
 		<div class="archive-list">
-			<div class="archive-item" v-for="item in archiveList" :key="item.year + item.month">
+			<div class="archive-item" @click="goArchive(item.year, item.month)" v-for="item in archiveList" :key="item.year + item.month">
 				<div>{{ monthDisplay(item.month) }} {{item.year}}</div>
 				<div>{{ item.articleNum }}</div>
 			</div>
@@ -15,10 +15,14 @@
 import archiveIcon from '@/assets/svg/archive.svg'
 import { _archiveList} from '@/api/archive.js'
 import { onMounted, ref } from 'vue'
-
+import { useRouter } from 'vue-router'
 onMounted(()=>{
 	getArchiveList({pageNum: 1, pageSize: 6})
 })
+const router = useRouter()
+const goArchive = (year, month) => {
+	router.push({path: `/archive/${year}/${month}`})
+}
 
 const archiveList = ref([])
 const getArchiveList = (params) => {
@@ -36,11 +40,13 @@ const monthDisplay = (month) => {
 <style lang="scss" scoped>
 .archive-wrapper {
 	.archive-list {
-		width: 243px;
+		width: 258.4px;
 		color: rgb(76, 73, 72);
 		.archive-item {
 			display: flex;
 			justify-content: space-between;
+			align-items: center;
+			padding: 0 5px;
 			height: 28px;
 			font-size: 14px;
 			&:hover {

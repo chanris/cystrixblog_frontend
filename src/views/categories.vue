@@ -10,27 +10,14 @@
 			<div class="content-box">
 				<el-row>
 					<el-col :span="18">
-						<el-card class="main-card">
-							<div class="title">分类 <span> - </span>6</div>
+						<el-card class="main-card" v-loading="loading">
+							<div class="title">分类 <span> - </span>{{sum}}</div>
 							<div class="category-list">
 								<div class="category-item">
-									<el-image :src="cateCircle" style="height: 12px; width: 12px; padding-right: 5px;"></el-image> <span> C语言</span> <span style="color: #858585;">(1)</span>
+									<el-image :src="cateCircle" style="height: 12px; width: 12px; padding-right: 5px;"></el-image> 
+									<span>{{ rootCate.name }}</span> <span style="color: #858585;">({{ rootCate.articleNum }})</span>
 								</div>
-								<div class="category-item">
-									<el-image :src="cateCircle" style="height: 12px; width: 12px; padding-right: 5px;"></el-image> <span> jwt</span> <span style="color: #858585;">(1)</span>
-								</div>
-								<div class="category-item-2">
-									<el-image :src="cateCircle" style="height: 12px; width: 12px; padding-right: 5px;"></el-image> <span> jwt</span> <span style="color: #858585;">(1)</span>
-								</div>
-								<div class="category-item-3">
-									<el-image :src="cateCircle" style="height: 12px; width: 12px; padding-right: 5px;"></el-image> <span> jwt</span> <span style="color: #858585;">(1)</span>
-								</div>
-								<div class="category-item">
-									<el-image :src="cateCircle" style="height: 12px; width: 12px; padding-right: 5px;"></el-image> <span> 前端</span> <span style="color: #858585;">(1)</span>
-								</div>
-								<div class="category-item">
-									<el-image :src="cateCircle" style="height: 12px; width: 12px; padding-right: 5px;"></el-image> <span> 博客</span> <span style="color: #858585;">(1)</span>
-								</div>
+								<CategoryItem v-if="rootCate.children && rootCate.children.length > 0" v-model:categoryList="rootCate.children"></CategoryItem>
 							</div>
 						</el-card>
 					</el-col>
@@ -59,7 +46,12 @@
 					</el-col>
 				</el-row>
 			</div>
-			<Footer></Footer>
+			<div class="footer">
+				<div class="footer-wrapper">
+					<div class="copyright">©2023-2025&nbsp;By&nbsp;Cystrix</div>
+					<div>Hi,&nbsp;welcome&nbsp;to&nbsp;cystrix's&nbsp;blog</div>
+				</div>
+			</div>
 		</div>
 	</div>
 </template>
@@ -72,13 +64,42 @@ import LatestArticle from '@/components/LatestArticle.vue'
 import Tag from '@/components/TagCard.vue'
 import Archive from '@/components/ArchiveCard.vue'
 import WebInfo from '@/components/WebInfo.vue'
-import Footer from '@/components/layout/footer.vue'
 import cateCircle from '@/assets/svg/cateCircle.svg'
+import { _categoryTree2 } from '@/api/category'
+import { onMounted, ref } from 'vue'
+import CategoryItem from './components/CategoryItem.vue'
+
+onMounted(()=>{
+	categoryTree({id: 1})
+})
+
+const loading = ref(false)
+const rootCate= ref('')
+const categoryTree = (params) => {
+	loading.value = true
+	_categoryTree2(params).then(({result})=>{
+		rootCate.value = result
+		sumCategory(rootCate.value)
+	}).finally(()=> {
+		loading.value = false
+	})
+}
+
+const sum = ref(0)
+const sumCategory = (root) => {
+	if(!root) return
+	sum.value = sum.value + 1
+	if(root.children) {
+		for(let item of root.children) {
+			sumCategory(item)
+		}
+	}
+}
+
 </script>
 <style lang="scss" scoped>
 .contianer {
 	color: #4C4948;
-
 	.title-box {
 		position: relative;
 		height: 400px;
@@ -170,6 +191,23 @@ import cateCircle from '@/assets/svg/cateCircle.svg'
 				}
 			}
 		}
+	}
+}
+
+.footer {
+	height: 164px;
+	background-image: url('@/assets/img/categories_bg.jpeg'); // todo 18/12/23 需要按页面替换
+	background-size: cover;
+	background-position: center bottom;
+
+	.footer-wrapper {
+		height: 100%;
+		display: flex;
+		justify-content: center;
+		flex-direction: column;
+		align-items: center;
+		color: #fff;
+		font-size: 14px;
 	}
 }
 

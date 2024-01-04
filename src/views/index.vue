@@ -21,7 +21,7 @@
 									<div class="article-title" @click="goDetail(article)">{{ article.title}}</div>
 									<div class="article-meta-wrap">
 										<Grid style="height: 13px; width: 13px; padding-right: 2px;"></Grid>发表于 <span
-											style="padding-left: 2px;">{{article.createTime}}</span> <span
+											style="padding-left: 2px;">{{article.createTime.substring(0, 10)}}</span> <span
 											style="padding: 0 6px;">|</span>
 										<Present style="height: 13px; width: 13px;"></Present> <span
 											style="padding-left: 2px;">{{article.categoryName}}</span>

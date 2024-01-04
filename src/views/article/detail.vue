@@ -59,7 +59,7 @@ import Footer from '@/components/layout/footer.vue'
 import copyrightIcon from '@/assets/svg/copyright.svg'
 import grayHeartIcon from '@/assets/svg/grayHeart.svg'
 import heartIcon from '@/assets/svg/heart.svg' 
-import { ref, onMounted, computed } from 'vue'
+import { ref, onMounted, computed, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { getArticleDetail, _likeArticle } from '@/api/article.js'
 import { ElMessage } from 'element-plus'
@@ -100,7 +100,9 @@ onMounted(()=>{
 	}
 	
 })
-
+watch(()=> route.params.id, (val, oldVal)=>{
+	console.log(val)
+})
 const readTime = computed(()=>{
 	return (article.value.wordNum && parseInt(article.value.wordNum / 200)) || 0
 }) 

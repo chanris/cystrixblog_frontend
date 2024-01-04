@@ -34,8 +34,7 @@
 <script setup>
 import zhexianIcon from '@/assets/svg/zhexian.svg'
 import { _getSiteInfo } from '@/api/site.js'
-import { onMounted, ref, computed } from 'vue'
-import {formatTime, parseTime} from '@/utils/format.js'
+import { onMounted, ref } from 'vue'
 
 onMounted(()=>{
 	getSiteInfo()

@@ -10,18 +10,10 @@
 			<div class="content-box">
 				<el-row>
 					<el-col :span="18">
-						<el-card class="tags-card">
-							<div class="tag-title">标签 <span> - </span>11</div>
+						<el-card class="tags-card" v-loading="loading">
+							<div class="tag-title">标签 <span> - </span>{{tagList.length}}</div>
 							<div class="tags-cloud">
-								<span class="tag-item">Hexo</span>
-								<span class="tag-item">NoSql</span>
-								<span class="tag-item">Redis</span>
-								<span class="tag-item">iconfonts</span>
-								<span class="tag-item">css</span>
-								<span class="tag-item">内存</span>
-								<span class="tag-item">数据类型</span>
-								<span class="tag-item">补码</span>
-								<span class="tag-item">token</span>
+								<span class="tag-item" v-for="tag in tagList" :key="tag.id" :style="{color: tag.color}">{{tag.name}}</span>
 							</div>
 						</el-card>
 					</el-col>
@@ -64,8 +56,35 @@ import Tag from '@/components/TagCard.vue'
 import Archive from '@/components/ArchiveCard.vue'
 import WebInfo from '@/components/WebInfo.vue'
 import Footer from '@/components/layout/footer.vue'
+
+import {_getAllTagList} from '@/api/tag.js'
+import { onMounted, ref } from 'vue'
+
+onMounted(() => {
+	getAllTags()
+})
+
+const loading = ref(false)
+const tagList = ref([])
+const getAllTags = () => {
+	loading.value = true	
+	_getAllTagList().then(({result})=>{
+		tagList.value = result
+	}).finally(()=>{
+		loading.value = false
+	})
+}
 </script>
 <style lang="scss" scoped>
+@keyframes pluse {
+	0% {
+		transform: scale(1);
+	}
+
+	100% {
+		transform: scale(1.2);
+	}
+}
 .box {
 	color: #4C4948;
 
@@ -139,11 +158,12 @@ import Footer from '@/components/layout/footer.vue'
 						height: 33.59px;
 						font-size: 16.8px;
 						transition: font-size 0.3s ease;
+						&:hover {
+							animation: pluse 0.5s 1 forwards; //关键帧  动画时间 动画次数  停留在最后一帧
+							cursor: pointer;
+						}
 					}
-					.tag-item:hover {
-						cursor: pointer;
-						font-size: 18px;
-					}
+					
 				}
 			}
 		}

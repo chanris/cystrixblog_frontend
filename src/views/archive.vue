@@ -10,56 +10,32 @@
 			<div class="content-box">
 				<el-row>
 					<el-col :span="18">
-						<el-card class="main-card">
+						<el-card class="main-card" v-loading="loading">
 							<div class="archive-box">
 								<div class="article-sort-title">
-									文章总览 - 6
+									文章总览 - {{ sum }}
 								</div>
 								<div class="article-sort">
-									<div class="article-sort-item year">2022</div>
-									<div class="article-sort-item">
-										<a href="#" class="article-sort-item-img">
-											<el-image src="@/assets/img/post_bg.jpg" style="height: 80px; width: 80px;"
-												alt="" />
-										</a>
-										<div class="article-sort-item-info">
-											<div class="info-one" style="display: flex; align-items: center;">
-												<Calendar style="height: 1em; width: 1em;"></Calendar> <span
-													style="padding-left: 6px;">2020-03-19</span>
+									<div v-for="item in list" :key="item.id">
+										<div class="article-sort-item year" v-if="item.flag">{{ item.title }}</div>
+										<div class="article-sort-item" v-else>
+											<el-image class="cover" :src="`http://47.109.110.189/download/cover/${item.coverImg}`" @click="goDetail(item.id)" style="height: 80px; width: 80px; " />
+											<div class="article-sort-item-info">
+												<div class="info-one" style="display: flex; align-items: center;">
+													<Calendar style="height: 1em; width: 1em;"></Calendar> <span
+														style="padding-left: 6px;">{{ item.createTime.substring(0, 10) }}</span>
+												</div>
+												<div class="info-two" @click="goDetail(item.id)">{{item.title}}</div>
 											</div>
-											<div class="info-two">JWT的介绍与使用</div>
-										</div>
-									</div>
-									<div class="article-sort-item">
-										<a href="#" class="article-sort-item-img">
-											<el-image src="@/assets/img/post_bg.jpg" style="height: 80px; width: 80px;"
-												alt="" />
-										</a>
-										<div class="article-sort-item-info">
-											<div class="info-one" style="display: flex; align-items: center;">
-												<Calendar style="height: 1em; width: 1em;"></Calendar> <span
-													style="padding-left: 6px;">2020-03-19</span>
-											</div>
-											<div class="info-two">JWT的介绍与使用</div>
-										</div>
-									</div>
-									<div class="article-sort-item">
-										<a href="#" class="article-sort-item-img">
-											<el-image src="@/assets/img/post_bg.jpg" style="height: 80px; width: 80px;"
-												alt="" />
-										</a>
-										<div class="article-sort-item-info">
-											<div class="info-one" style="display: flex; align-items: center;">
-												<Calendar style="height: 1em; width: 1em;"></Calendar> <span
-													style="padding-left: 6px;">2020-03-19</span>
-											</div>
-											<div class="info-two">JWT的介绍与使用</div>
 										</div>
 									</div>
 								</div>
 								<div class="page-wrapper">
-									<el-pagination :hide-on-single-page="true" background layout="prev, pager, next"
-										:total="50" />
+									<el-pagination :hide-on-single-page="true" 
+										background layout="prev, pager, next"
+										v-model:page-size="pageInfo.pageSize"
+										v-model:current-page="pageInfo.pageNum"
+										:total="pageInfo.total" />
 								</div>
 							</div>
 						</el-card>
@@ -103,6 +79,63 @@ import Tag from '@/components/TagCard.vue'
 import Archive from '@/components/ArchiveCard.vue'
 import WebInfo from '@/components/WebInfo.vue'
 import Footer from '@/components/layout/footer.vue'
+import { onMounted, ref, watch} from 'vue'
+import { _listArticleWithPage } from '@/api/archive.js'
+import { useRoute, useRouter } from 'vue-router'
+const route = useRoute()
+const router = useRouter()
+onMounted(()=>{
+	if(route.params.year && route.params.month) {
+		pageInfo.value.year = route.params.year
+		pageInfo.value.month = route.params.month
+	}
+	listArticleWithPage(pageInfo.value)
+})
+const pageInfo = ref({
+	pageNum: 1,
+	pageSize: 10,
+	total: 0,
+	year: '',
+	month: ''
+})
+const list = ref([])
+const sum = ref(0)
+const loading = ref(false)
+const listArticleWithPage = (params) => {
+	loading.value = true
+	list.value = []	
+	_listArticleWithPage(params).then(({result})=>{
+		pageInfo.value.pageNum = result.pageNum
+		pageInfo.value.pageSize = result.pageSize
+		pageInfo.value.total = result.total
+		sum.value = result.list.length
+		let ele = ''
+		result.list.forEach(item => {
+			item.flag = false
+			let year = item.createTime.substring(0, 4)
+			if(ele && ele.createTime.substring(0, 4) !== year) {
+				list.value.push({id: Math.floor(Math.random() * 1000000000), title: year, flag: true})			
+			}
+			list.value.push(item)
+			ele = item
+		})
+	}).finally(()=>{
+		loading.value = false
+	})
+}
+
+watch([()=>pageInfo.value.pageNum, ()=>pageInfo.value.pageSize], 
+	([pageNum, pageSize], [oldPageNum, oldPageSize]) => {
+		// todo 23/12/29 为什么每次监听 pageNum === oldPageNum ?
+		listArticleWithPage(pageInfo.value)
+})
+
+
+const goDetail = (id) => {
+	router.push({path:`/article/detail/${id}`})
+}
+
+
 
 </script>
 <style lang="scss" scoped>
@@ -185,6 +218,10 @@ import Footer from '@/components/layout/footer.vue'
 							height: 80px;
 							margin-bottom: 20px;
 
+							.cover:hover {
+								cursor: pointer;
+							}
+
 							&::before {
 								position: absolute;
 								top: 50%;
@@ -207,6 +244,9 @@ import Footer from '@/components/layout/footer.vue'
 								flex-direction: column;
 								// align-items: center;
 								padding: 0px 16px;
+								.cover:hover {
+									cursor: pointer;
+								}
 
 								.info-one {
 									height: 24.69px;
@@ -216,6 +256,9 @@ import Footer from '@/components/layout/footer.vue'
 
 								.info-two {
 									height: 28.59px;
+									&:hover {
+										cursor: pointer;
+									}
 								}
 							}
 

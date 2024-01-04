@@ -5,7 +5,7 @@
 			最新文章
 		</div>
 		<div class="article-list">
-			<div class="article-item" v-for="item in articleList" :key="item.id">
+			<div class="article-item" v-for="item,index in articleList" :key="item.id" :style="index === articleList.length - 1 ? {border: 0} : {}">
 				<el-image class="img" 
 				@click="goDetail(item)"
 				fit="cover"
@@ -21,16 +21,16 @@
 <script setup>
 import timeIcon from '@/assets/svg/time.svg'
 import { onMounted, ref } from 'vue'
-import { useRouter } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
 import { _getArticleListWithoutContent } from '@/api/article.js'
-
 const articleList = ref([])
 const router = useRouter()
+
 const goDetail = (article) => {
-	router.push({name: 'articleDetail', params: {
-		id: article.id
-	}})
+	router.push({path: `/article/detail/${article.id}`, force: true})
 }
+
+
 onMounted(()=>{
 	getArticleList({pageNum: 1, pageSize: 5})
 })
@@ -47,8 +47,10 @@ const getArticleList = (params) => {
 		color: rgb(76, 73, 72);
 		.article-item {
 			display: flex;
-			height: 66px;
-			width: 230px;
+			height: 65px;
+			width: 258.72px;
+			border-bottom: 1px dashed rgb(245, 245, 245);
+			margin: 4px 0;
 			.img {
 				height: 59px; 
 				width: 59px; 

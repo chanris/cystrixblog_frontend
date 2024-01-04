@@ -10,3 +10,12 @@ export function _archiveList(params) {
 		data: params
 	})
 }
+
+
+export function _listArticleWithPage(params) {
+	return request({
+		url: '/home/archive/listArticleWithPage',
+		method: 'post',
+		data: params
+	})
+}

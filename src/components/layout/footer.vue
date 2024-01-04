@@ -21,8 +21,7 @@ const setImg = (coverImg) => {
 <style lang="scss" scoped>
 .footer {
 	height: 164px;
-	// background-image: url('@/assets/img/index_bg.png'); // todo 18/12/23 需要按页面替换
-	background-color: #4C4948;
+	background-image: url('../../assets/img/index_bg.png'); // todo 18/12/23 需要按页面替换
 	background-size: cover;
 	background-position: center bottom;
 
