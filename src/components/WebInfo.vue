@@ -22,7 +22,7 @@
 			</div>
 			<div class="website-info-item">
 				<div>本站总访问量：</div>
-				<div>{{siteInfo.visitorsNum}}</div>
+				<div>{{siteInfo.visitNum}}</div>
 			</div>
 			<div class="website-info-item">
 				<div>最后更新时间：</div>

@@ -1,7 +1,7 @@
 import axios from 'axios'
 import store from '@/store'
 import router from '@/router'
-
+import {jwtDecode} from 'jwt-decode'
 import {ElMessage} from 'element-plus'
 var errorMsg = null // 控制只显示一个错误提示
 var errorCode = [401, 403]
@@ -44,10 +44,14 @@ service.interceptors.response.use(
 			// token续命
 			const res = response.data
 			if(res.refreshToken) {
-				const user = store.getters.user
-				user.token = res.refreshToken
+				let token = res.refreshToken
+				let user = {}
+				let decode = jwtDecode(token)
+				user.id = decode['user-id']
+				user.username = decode['username']
+				user.token = token
 				store.commit('SET_USER', user)
-				store.commit('SET_TOKEN', res.refreshToken)
+				store.commit('SET_TOKEN', token)
 			}
 			if (response.status === 405 || errorCode.indexOf(res.code) !== -1) {
 				router.push({name: 'login'})

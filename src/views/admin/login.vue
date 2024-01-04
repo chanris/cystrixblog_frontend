@@ -77,7 +77,7 @@ const checkEmail = (rule, value, callback) => {
 }
 
 const checkCode = (rule, value, callback) => {
-	const codeRegex = /^[a-zA-Z0-9]{5}$/
+	const codeRegex = /^[a-zA-Z0-9]{6}$/
 	if(value === '') {
 		callback(new Error('请输入验证码'))
 	}else if(!codeRegex.test(value)) {
