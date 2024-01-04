@@ -21,7 +21,9 @@ onMounted(()=>{
 })
 const router = useRouter()
 const goArchive = (year, month) => {
-	router.push({path: `/archive/${year}/${month}`})
+	router.push({path: `/archive`, query: {
+		year, month
+	}})
 }
 
 const archiveList = ref([])

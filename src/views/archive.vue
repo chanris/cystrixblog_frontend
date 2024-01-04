@@ -19,7 +19,7 @@
 									<div v-for="item in list" :key="item.id">
 										<div class="article-sort-item year" v-if="item.flag">{{ item.title }}</div>
 										<div class="article-sort-item" v-else>
-											<el-image class="cover" :src="`http://47.109.110.189/download/cover/${item.coverImg}`" @click="goDetail(item.id)" style="height: 80px; width: 80px; " />
+											<el-image class="cover" fit="cover" :src="`http://47.109.110.189/download/cover/${item.coverImg}`" @click="goDetail(item.id)" style="height: 80px; width: 80px; " />
 											<div class="article-sort-item-info">
 												<div class="info-one" style="display: flex; align-items: center;">
 													<Calendar style="height: 1em; width: 1em;"></Calendar> <span
@@ -85,9 +85,9 @@ import { useRoute, useRouter } from 'vue-router'
 const route = useRoute()
 const router = useRouter()
 onMounted(()=>{
-	if(route.params.year && route.params.month) {
-		pageInfo.value.year = route.params.year
-		pageInfo.value.month = route.params.month
+	if(route.query.year && route.query.month) {
+		pageInfo.value.year = route.query.year
+		pageInfo.value.month = route.query.month
 	}
 	listArticleWithPage(pageInfo.value)
 })

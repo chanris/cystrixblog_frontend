@@ -24,7 +24,7 @@ const router = createRouter({
 		component: () => import('@/views/categories.vue')
     },
     {
-		path: '/archive/:year/:month',
+		path: '/archive',
 		name: 'archive',
 		component: () => import('@/views/archive.vue')
     },
