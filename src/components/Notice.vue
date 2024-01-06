@@ -5,7 +5,7 @@
 		</div>
 		<div class="list">
 			<div class="item">
-				This is my blog
+				欢迎来到Cystrix's Blog
 			</div>
 		</div>
 	</div>

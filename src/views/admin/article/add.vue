@@ -126,7 +126,7 @@ const getAllTagList = () => {
 const confirmTag = () => {
 	if (tagName.value) {
 		let name = tagName.value
-		_createTag({name: tagName.value}).then((resp)=>{
+		_createTag({name: tagName.value, color: randomHexColor()}).then((resp)=>{
 			tagList.value.push({id: resp.result, name})
 			ElMessage({
 				type:'success',
@@ -141,6 +141,25 @@ const confirmTag = () => {
 		})
 	}
 }
+
+function randomHexColor() {
+  // 生成随机的红、绿、蓝分量
+  const red = Math.floor(Math.random() * 256);
+  const green = Math.floor(Math.random() * 256);
+  const blue = Math.floor(Math.random() * 256);
+
+  // 将RGB分量转换为16进制字符串，并确保每个分量都有两位
+  const hexRed = red.toString(16).padStart(2, '0');
+  const hexGreen = green.toString(16).padStart(2, '0');
+  const hexBlue = blue.toString(16).padStart(2, '0');
+
+  // 拼接成完整的16进制RGB颜色值
+  const hexColor = `#${hexRed}${hexGreen}${hexBlue}`;
+
+  return hexColor;
+}
+
+
 const clear = () => {
 	tagName.value = ''
 	isAddTag.value = false

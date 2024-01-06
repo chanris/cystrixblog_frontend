@@ -171,11 +171,10 @@ const addFormRules = ref({
 	],
 })
 const createTag = (formEL) => {
-
 	if(!formEL) return 
 	formEL.validate((valid)=>{
 		if(valid) {
-			_createTag({name: formData.value.name}).then(()=>{
+			_createTag({name: formData.value.name, color: randomHexColor()}).then(()=>{
 				ElMessage({
 					type: 'success',
 					message: '添加成功'
@@ -188,6 +187,23 @@ const createTag = (formEL) => {
 		}
 	})
 	
+}
+
+function randomHexColor() {
+  // 生成随机的红、绿、蓝分量
+  const red = Math.floor(Math.random() * 256);
+  const green = Math.floor(Math.random() * 256);
+  const blue = Math.floor(Math.random() * 256);
+
+  // 将RGB分量转换为16进制字符串，并确保每个分量都有两位
+  const hexRed = red.toString(16).padStart(2, '0');
+  const hexGreen = green.toString(16).padStart(2, '0');
+  const hexBlue = blue.toString(16).padStart(2, '0');
+
+  // 拼接成完整的16进制RGB颜色值
+  const hexColor = `#${hexRed}${hexGreen}${hexBlue}`;
+
+  return hexColor;
 }
 </script>
 <style lang="scss" scoped>

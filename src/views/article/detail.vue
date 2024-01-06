@@ -101,8 +101,10 @@ onMounted(()=>{
 	
 })
 // 当push页面相同时，使用watch  route.params 解决
+// TODO 24/1/6 当从其他页面跳转到detail页面， watch 为什么不会触发？ 
 watch(()=> route.params.id, (val, oldVal)=>{
 	if(val && val !== oldVal) {
+		console.log('xxx')
 		let id = val
 		article.value.content = ''
 		loading.value = true

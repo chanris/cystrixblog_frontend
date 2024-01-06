@@ -30,7 +30,7 @@
 </template>
 <script setup>
 import { ref, onMounted, computed } from 'vue'
-import { useRouter } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
 let lastScrollPosition = 0
 const isVisible = ref(true)
 const hasBgColor = ref(false)
@@ -73,16 +73,28 @@ const goIndex = () => {
 
 //去标签页面
 const goTag = () => {
-	router.push({name: 'tags'})
+	if(router.currentRoute.value.name === 'tags') {
+		location.reload()
+	}else {
+		router.push({name: 'tags'})
+	}
 }
 
 const goCategory = () => {
-	router.push({name: 'categories'})
+	if(router.currentRoute.value.name === 'categories') {
+		location.reload()
+	}else {
+		router.push({name: 'categories'})
+	}
 }
 
 // 去归档页面
 const goArchive = () => {
-	router.push({name: 'archive'})
+	if(router.currentRoute.value.name === 'archive') {
+		location.reload()
+	}else {
+		router.push({name: 'archive'})
+	}
 }
 
 </script>

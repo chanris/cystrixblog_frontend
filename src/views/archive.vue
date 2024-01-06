@@ -126,8 +126,17 @@ const listArticleWithPage = (params) => {
 
 watch([()=>pageInfo.value.pageNum, ()=>pageInfo.value.pageSize], 
 	([pageNum, pageSize], [oldPageNum, oldPageSize]) => {
-		// todo 23/12/29 为什么每次监听 pageNum === oldPageNum ?
+		// TODO 23/12/29 为什么每次监听 pageNum === oldPageNum ?
 		listArticleWithPage(pageInfo.value)
+})
+
+watch([()=>route.query.year, ()=>route.query.month], ([year, month], [oldYear, oldMonth]) => {
+	if(year && month) {
+		pageInfo.value.year = route.query.year
+		pageInfo.value.month = route.query.month
+		listArticleWithPage({year, month})
+		window.scrollTo(0, 0)
+	}
 })
 
 
