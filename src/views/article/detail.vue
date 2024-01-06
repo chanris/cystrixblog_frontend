@@ -28,8 +28,8 @@
 										<el-image style="width: 21px; height: 21px;" :src="copyrightIcon"></el-image>
 									</div>
 								</div>
-								<div style="height: 28px;"><span class="head">文章链接：</span> <a href="#">http://www.baidu.com/post/detail/xxxx/</a> </div>
-								<div style="height: 28px;"><span class="head">版权声明：</span> 本博客所有文章除特别声明外，均采用 <a href="#">CC BY-NC-SA 4.0 </a> 许可协议。转载请注明来自  <a href="/">Cystrix's blog</a>！</div>
+								<div style="height: 28px;"><span class="head">文章链接：</span> <a :href="`http://47.109.110.189/article/detail/${article.id}`">http://47.109.110.189/article/detail/{{article.id}}</a> </div>
+								<div style="height: 28px;"><span class="head">版权声明：</span> 本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0 </a> 许可协议。转载请注明来自  <a href="/">Cystrix's blog</a>！</div>
 							</div>
 						</el-card>
 					</el-col>
@@ -100,8 +100,23 @@ onMounted(()=>{
 	}
 	
 })
+// 当push页面相同时，使用watch  route.params 解决
 watch(()=> route.params.id, (val, oldVal)=>{
-	console.log(val)
+	if(val && val !== oldVal) {
+		let id = val
+		article.value.content = ''
+		loading.value = true
+		getArticleDetail({id}).then(({result})=>{
+			article.value = result
+			let el = document.querySelector(".title-box")
+			if(article.value.coverImg) {
+				coverImg.value = `url('http://47.109.110.189/download/cover/${article.value.coverImg}')`
+				el.style.backgroundImage = coverImg.value
+			}
+		}).finally(()=>{
+			loading.value = false
+		})
+	}
 })
 const readTime = computed(()=>{
 	return (article.value.wordNum && parseInt(article.value.wordNum / 200)) || 0
@@ -118,7 +133,7 @@ const likeArticle = (params) => {
 		})
 	})
 }
-
+// 闭包，只点赞一次
 const doLikeOnce = (() => {
 	let once = false
 	return (id) => {
@@ -143,7 +158,6 @@ a {
 	.title-box {
 		height: 400px;
 		width: 100%;
-		color: #fff;
 		// background-image: url('@/assets/img/post_bg.jpg');
 		background-color: #4C4948;
 		filter: brightness(95%);
@@ -158,6 +172,8 @@ a {
 			width: 100%;
 			margin: 0 auto;
 			padding-top: 165px;
+			color: #fff;
+			// mix-blend-mode: difference;
 			.title {
 				margin-top: 20px;
 				margin-bottom: 8px;

@@ -70,7 +70,12 @@
 			</div>
 		</div>
 		<div class="content">
-			<v-md-editor v-if="isEdit" v-loading="articleLoading"  v-model="article.content" height="790px"></v-md-editor>
+			<v-md-editor v-if="isEdit" 
+			v-loading="articleLoading" 
+			:disabled-menus="[]"  
+			v-model="article.content"
+			@upload-image="uploadImage"
+			height="790px"></v-md-editor>
 			<v-md-preview v-else  v-loading="articleLoading" :text="article.content" height="790px" ></v-md-preview>
 		</div>
 	</div>
@@ -126,6 +131,19 @@ const updateArticleDetail = (params) => {
 			isEdit.value = false
 		}
 	})
+}
+const uploadImage = (event, insertImage, files) => {
+	// 拿到 files 之后上传到文件服务器，然后向编辑框中插入对应的内容
+	console.log(files);
+		
+	  // 此处只做示例
+      insertImage({
+        url:
+          'http://47.109.110.189:8080/download/img',
+        desc: '',
+        // width: 'auto',
+        // height: 'auto',
+      });
 }
 const saveUpdate = () => {
 	updateArticleDetail(article.value)

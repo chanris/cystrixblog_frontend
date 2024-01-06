@@ -65,7 +65,7 @@
 								:before-upload="beforeUploadHandle"
 								:on-success="uploadSuccssHandle"
 								:on-error="uploadErrorHandle"
-								action="http://47.109.110.189:8080/admin/article/upload/img">
+								action="http://47.109.110.189:8080/admin/article/upload/cover">
 								<el-button link type="primary" size="small">封面</el-button>
 							</el-upload>
 						</div>
