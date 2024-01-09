@@ -56,7 +56,7 @@
 									<el-button link type="danger" size="small">删除</el-button>
 								</template>
 							</el-popconfirm>
-							<el-upload
+							<el-upload v-if="!coverImg"
 								v-model:file-list="fileList"
 								:headers="{authorization: store.getters.token || ''}"
 								:data="{id: scope.row.id}"
@@ -66,7 +66,19 @@
 								:on-success="uploadSuccssHandle"
 								:on-error="uploadErrorHandle"
 								action="http://47.109.110.189:8080/admin/article/upload/cover">
-								<el-button link type="primary" size="small">封面</el-button>
+								<el-button link type="primary" size="small">设置封面</el-button>
+							</el-upload>
+							<el-upload v-else
+								v-model:file-list="fileList"
+								:headers="{authorization: store.getters.token || ''}"
+								:data="{id: scope.row.id}"
+								:show-file-list="false"
+								accept=".jpg,.jpeg.,.png,.PNG,.JPG,.JPEG"
+								:before-upload="beforeUploadHandle"
+								:on-success="uploadSuccssHandle"
+								:on-error="uploadErrorHandle"
+								action="http://47.109.110.189:8080/admin/article/update/cover">
+								<el-button link type="primary" size="small">更新封面</el-button>
 							</el-upload>
 						</div>
 						

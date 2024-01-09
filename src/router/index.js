@@ -14,7 +14,7 @@ const router = createRouter({
 		component: () => import('@/views/article/detail.vue'),
     },
     {
-		path: '/tags/:tag',
+		path: '/tags',
 		name: 'tags',
 		component: () => import('@/views/tags.vue')
     },

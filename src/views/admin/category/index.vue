@@ -1,6 +1,6 @@
 <template>
 	<div class="container">
-		<el-tree v-loading="loading" style="width: 800px;" :data="cateTree" show-checkbox node-key="categoryTree" default-expand-all :expand-on-click-node="false">
+		<el-tree v-if="overview" v-loading="loading" style="width: 800px;" :data="cateTree" show-checkbox node-key="categoryTree" default-expand-all :expand-on-click-node="false">
 			<template #default="{ node, data }">
 				<span class="custom-tree-node">
 					<span>{{ node.label }}</span>
@@ -11,17 +11,29 @@
 				</span>
 			</template>
 		</el-tree>
+		<div v-else>
+			不是总览
+		</div>
 	</div>
 </template>
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
+import { useRouter, useRoute } from 'vue-router'
 import { _categoryTree, _addCategory, _removeCategory } from '@/api/category.js'
 import { ElMessage, ElMessageBox } from 'element-plus'
 
+const route = useRoute()
 onMounted(() => {
-	getCategoryTree({ id: 1 })
-})
+	if(route.query.cateId) {
 
+	}else {
+		getCategoryTree({ id: 1 })
+	}
+	
+})
+const overview = computed(() => {
+	return !route.query.cateId
+})
 const cateTree = ref([])
 const loading = ref(false)
 const getCategoryTree = (params) => {

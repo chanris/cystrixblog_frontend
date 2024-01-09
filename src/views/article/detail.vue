@@ -104,11 +104,10 @@ onMounted(()=>{
 // TODO 24/1/6 当从其他页面跳转到detail页面， watch 为什么不会触发？ 
 watch(()=> route.params.id, (val, oldVal)=>{
 	if(val && val !== oldVal) {
-		console.log('xxx')
 		let id = val
-		article.value.content = ''
 		loading.value = true
 		getArticleDetail({id}).then(({result})=>{
+			window.scrollTo({top: 0})
 			article.value = result
 			let el = document.querySelector(".title-box")
 			if(article.value.coverImg) {
