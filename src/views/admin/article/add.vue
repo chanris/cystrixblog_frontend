@@ -49,12 +49,16 @@
 			<el-button type="primary" @click="publishArticle">发布</el-button>
 		</div>
 		<div>
-			<v-md-editor v-model.trim="article.content" height="790px"></v-md-editor>
+			<v-md-editor 
+			v-model.trim="article.content" 
+			:disabled-menus="[]"
+			@upload-image="uploadImage"
+			height="790px"></v-md-editor>
 		</div>
 	</div>
 </template>
 <script setup>
-import { _createArticle } from '@/api/article.js'
+import { _createArticle, _uploadArticleImg } from '@/api/article.js'
 import { _getAllTagList, _createTag } from '@/api/tag.js'
 import { _getCategoryByArticleId, _updateCategoryRef, _categoryTree } from '@/api/category.js'
 import { ElMessage } from 'element-plus'
@@ -140,6 +144,25 @@ const confirmTag = () => {
 			message: '标签名称不能为空'
 		})
 	}
+}
+
+const uploadImage = (event, insertImage, files) => {
+	// 拿到 files 之后上传到文件服务器，然后向编辑框中插入对应的内容
+	if(!files[0]) return
+	const formData = new FormData()
+	formData.append('file', files[0])
+	_uploadArticleImg(formData).then(({result})=>{
+		ElMessage({
+			type: 'success',
+			message: '上传成功'
+		})
+		insertImage({
+			url: `http://47.109.110.189/download/img/${result.name}`,
+			desc: '',
+			width: '200',
+			height: 'auto',
+		});
+	})
 }
 
 function randomHexColor() {
