@@ -83,7 +83,7 @@
 <script setup>
 import {ref, onMounted, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { _getArticleDetail,  _updateArticleDetail} from '@/api/article.js'
+import { _getArticleDetail,  _updateArticleDetail, _uploadArticleImg} from '@/api/article.js'
 import { _categoryTree, _getCategoryByArticleId, _updateCategoryRef } from '@/api/category.js'
 import { _getAllTagList, _createTag, _getTagListByArticleId, 
 	_deleteRef, _batchAddRef } from '@/api/tag.js'
@@ -134,16 +134,22 @@ const updateArticleDetail = (params) => {
 }
 const uploadImage = (event, insertImage, files) => {
 	// 拿到 files 之后上传到文件服务器，然后向编辑框中插入对应的内容
-	console.log(files);
-		
-	  // 此处只做示例
-      insertImage({
-        url:
-          'http://47.109.110.189:8080/download/img',
-        desc: '',
-        // width: 'auto',
-        // height: 'auto',
-      });
+	if(!files[0]) return
+	const formData = new FormData()
+	formData.append('file', files[0])
+	formData.append('id', article.value.id);
+	_uploadArticleImg(formData).then(({result})=>{
+		ElMessage({
+			type: 'success',
+			message: '上传成功'
+		})
+		insertImage({
+			url: `http://47.109.110.189/download/img/${result.name}`,
+			desc: '',
+			width: '200',
+			height: 'auto',
+		});
+	})
 }
 const saveUpdate = () => {
 	updateArticleDetail(article.value)

@@ -56,7 +56,7 @@
 									<el-button link type="danger" size="small">删除</el-button>
 								</template>
 							</el-popconfirm>
-							<el-upload v-if="!coverImg"
+							<el-upload v-if="!scope.row.coverImg"
 								v-model:file-list="fileList"
 								:headers="{authorization: store.getters.token || ''}"
 								:data="{id: scope.row.id}"

@@ -72,3 +72,15 @@ export function _likeArticle(params) {
 		data: params
 	})
 }
+
+export function _uploadArticleImg(params) {
+	return request({
+		url: '/admin/article/upload/img',
+		method: 'post',
+		headers: {
+			'Content-Type': 'multipart/form-data'
+		},
+		data: params
+	})
+}
+

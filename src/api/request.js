@@ -53,7 +53,9 @@ service.interceptors.response.use(
 				store.commit('SET_USER', user)
 				store.commit('SET_TOKEN', token)
 			}
-			if (response.status === 405 || errorCode.indexOf(res.code) !== -1) {
+			
+			if (response.status === 401 || errorCode.indexOf(res.code) !== -1) {
+				console.log('xxxx')
 				router.push({name: 'login'})
 				return
 			}
@@ -74,6 +76,8 @@ service.interceptors.response.use(
 		}
 	},
 	error => {
+		//清楚过期token
+		//store.dispatch('logout')
 		!errorMsg && ( errorMsg = ElMessage({
 			message: error.message,
 			type: 'error',
