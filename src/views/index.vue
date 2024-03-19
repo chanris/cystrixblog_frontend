@@ -71,7 +71,7 @@
 </template>
 
 <script setup>
-import { onMounted, ref, onBeforeUnmount, watch, computed } from 'vue'
+import { onMounted, ref, onBeforeUnmount, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import NavigateBar from '@/components/layout/NavigateBar.vue'
 import UserInfo from '@/components/UserInfo.vue'
