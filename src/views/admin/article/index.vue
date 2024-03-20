@@ -102,6 +102,17 @@ import { parseTime } from '@/utils/format.js'
 
 const fileList = ref([])
 const store = useStore()
+const searchData =  ref({
+	title: '',
+	timeRange: '',
+	startTime: '',
+	endTime: ''
+})
+const pageInfo = ref({
+	pageNum: 1,
+	pageSize: 10,
+	total: 0
+})
 const beforeUploadHandle = (file) => {
 	if(!file) return false
 	let suffix = file.name.split('.').pop()
@@ -120,6 +131,7 @@ const uploadSuccssHandle = (response) => {
 		type: 'success',
 		message: '上传成功'
 	})
+	getArticleList({...searchData.value, ...pageInfo.value}) // 刷新页面
 	console.log(response)
 }
 const uploadErrorHandle = (err) => {
@@ -147,12 +159,7 @@ const removeArticle = (params) => {
 const delConfirm = (item) => {
 	removeArticle({id: item.id})
 }
-const searchData =  ref({
-	title: '',
-	timeRange: '',
-	startTime: '',
-	endTime: ''
-})
+
 watch(searchData.value, (val, oldVal)=>{
 	if(val.timeRange) {
 		val.startTime = parseTime(val.timeRange[0]) 
@@ -170,11 +177,7 @@ const resetSearch = () => {
 	searchData.value.timeRange = ''
 	getArticleList({})
 }
-const pageInfo = ref({
-	pageNum: 1,
-	pageSize: 10,
-	total: 0
-})
+
 const indexCoordinate = ref({
 	pageNum: 1,
 	pageSize: 10,
