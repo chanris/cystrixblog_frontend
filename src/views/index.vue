@@ -14,7 +14,7 @@
 						<el-card class="post-item" v-for="article in articleList" :key="article.id">
 							<el-image class="post-cover"
 							fit="cover"
-							:src="`http://47.109.110.189/download/cover/${article.coverImg}`" 
+							:src="`http://${ip}/download/cover/${article.coverImg}`" 
 							@click="goDetail(article)"></el-image>
 							<div class="post-item-right">
 								<div class="recent-post-info">
@@ -84,7 +84,7 @@ import WebInfo from '@/components/WebInfo.vue'
 import Footer from '@/components/layout/footer.vue'
 import { _randomMottos } from '@/api/site.js'
 import { _getArticleListWithoutContent } from '@/api/article.js'
-
+const ip = ref(import.meta.env.VITE_BASE_IP)
 //跳转到正文部分
 const scrollToContent = function () {
 	const contentBoxHeight = document.querySelector('.content-box').offsetTop

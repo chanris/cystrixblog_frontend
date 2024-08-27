@@ -28,7 +28,7 @@
 										<el-image style="width: 21px; height: 21px;" :src="copyrightIcon"></el-image>
 									</div>
 								</div>
-								<div style="height: 28px;"><span class="head">文章链接：</span> <a :href="`http://47.109.110.189/article/detail/${article.id}`">http://47.109.110.189/article/detail/{{article.id}}</a> </div>
+								<div style="height: 28px;"><span class="head">文章链接：</span> <a :href="`http://111.229.171.30/article/detail/${article.id}`">http://111.229.171.30/article/detail/{{article.id}}</a> </div>
 								<div style="height: 28px;"><span class="head">版权声明：</span> 本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0 </a> 许可协议。转载请注明来自  <a href="/">Cystrix's blog</a>！</div>
 							</div>
 						</el-card>
@@ -89,7 +89,7 @@ onMounted(()=>{
 			article.value = result
 			let el = document.querySelector(".title-box")
 			if(article.value.coverImg) {
-				coverImg.value = `url('http://47.109.110.189/download/cover/${article.value.coverImg}')`
+				coverImg.value = `url('http://111.229.171.30/download/cover/${article.value.coverImg}')`
 				el.style.backgroundImage = coverImg.value
 			}
 		}).finally(()=>{
@@ -111,7 +111,7 @@ watch(()=> route.params.id, (val, oldVal)=>{
 			article.value = result
 			let el = document.querySelector(".title-box")
 			if(article.value.coverImg) {
-				coverImg.value = `url('http://47.109.110.189/download/cover/${article.value.coverImg}')`
+				coverImg.value = `url('http://111.229.171.30/download/cover/${article.value.coverImg}')`
 				el.style.backgroundImage = coverImg.value
 			}
 		}).finally(()=>{

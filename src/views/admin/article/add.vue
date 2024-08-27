@@ -64,7 +64,7 @@ import { _getCategoryByArticleId, _updateCategoryRef, _categoryTree } from '@/ap
 import { ElMessage } from 'element-plus'
 import { ref, onMounted, watch } from 'vue'
 import { useRouter } from 'vue-router'
-
+const ip = ref(import.meta.env.VITE_BASE_IP)
 const router = useRouter()
 const article = ref({
 	content: '',
@@ -157,7 +157,7 @@ const uploadImage = (event, insertImage, files) => {
 			message: '上传成功'
 		})
 		insertImage({
-			url: `http://47.109.110.189/download/img/${result.name}`,
+			url: `http://${ip}/download/img/${result.name}`,
 			desc: '',
 			width: '200',
 			height: 'auto',

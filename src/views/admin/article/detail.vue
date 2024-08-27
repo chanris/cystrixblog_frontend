@@ -91,7 +91,7 @@ import { ElMessage } from 'element-plus'
 
 const route = useRoute()
 const router = useRouter()
-
+const ip = ref(import.meta.env.VITE_BASE_IP)
 onMounted(()=>{
 	if(route.params.id) {
 		getArticleDetail({id: route.params.id})
@@ -144,7 +144,7 @@ const uploadImage = (event, insertImage, files) => {
 			message: '上传成功'
 		})
 		insertImage({
-			url: `http://47.109.110.189/download/img/${result.name}`,
+			url: `http://${ip}/download/img/${result.name}`,
 			desc: '',
 			width: '200',
 			height: 'auto',

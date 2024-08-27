@@ -65,7 +65,7 @@
 								:before-upload="beforeUploadHandle"
 								:on-success="uploadSuccssHandle"
 								:on-error="uploadErrorHandle"
-								action="http://47.109.110.189:8080/admin/article/upload/cover">
+								:action="`http://${ip}:8080/admin/article/upload/cover`">
 								<el-button link type="primary" size="small">设置封面</el-button>
 							</el-upload>
 							<el-upload v-else
@@ -77,7 +77,7 @@
 								:before-upload="beforeUploadHandle"
 								:on-success="uploadSuccssHandle"
 								:on-error="uploadErrorHandle"
-								action="http://47.109.110.189:8080/admin/article/update/cover">
+								:action="`http://${ip}:8080/admin/article/update/cover`">
 								<el-button link type="primary" size="small">更新封面</el-button>
 							</el-upload>
 						</div>
@@ -99,7 +99,7 @@ import { useRouter } from 'vue-router'
 import { useStore } from 'vuex'
 import { _getArticleList, _removeArticle } from '@/api/article.js'
 import { parseTime } from '@/utils/format.js'
-
+const ip = ref(import.meta.env.VITE_BASE_IP)
 const fileList = ref([])
 const store = useStore()
 const searchData =  ref({

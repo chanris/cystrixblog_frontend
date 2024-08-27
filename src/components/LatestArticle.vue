@@ -9,7 +9,7 @@
 				<el-image class="img" 
 				@click="goDetail(item)"
 				fit="cover"
-				:src="`http://47.109.110.189/download/cover/${item.coverImg}`"></el-image>
+				:src="`http://${ip}/download/cover/${item.coverImg}`"></el-image>
 				<div class="item-right" >
 					<div class="item-right-one" @click="goDetail(item)">{{item.title}}</div>
 					<div class="item-right-two">{{ item.createTime.substring(0, 10) }}</div>
@@ -25,7 +25,7 @@ import { useRouter, useRoute } from 'vue-router'
 import { _getArticleListWithoutContent } from '@/api/article.js'
 const articleList = ref([])
 const router = useRouter()
-
+const ip = ref(import.meta.env.VITE_BASE_IP)
 const goDetail = (article) => {
 	router.push({path: `/article/detail/${article.id}`, force: true})
 }
